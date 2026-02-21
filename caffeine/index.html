@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caffeine — ViceBudget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- * lone wolf, no leash | Matt Livingston -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #f5f0e8;
+      --stone: #e8e0d0;
+      --sand: #d4c9b4;
+      --bark: #8c7355;
+      --cedar: #5c4a32;
+      --charcoal: #2a2420;
+      --text: #3a3028;
+      --text-light: #6b5f52;
+      --accent: #b85c38;
+
+      /* Caffeine palette — deep coffee browns + warm amber */
+      --caf: #8b6914;
+      --caf-dark: #5c4208;
+      --caf-mid: #c49a30;
+      --caf-light: #f5edda;
+      --caf-border: #ddc87a;
+
+      --green: #4a7c59;
+      --red-soft: #9e4a3a;
+      --amber: #8b6914;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 247, 242, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cedar);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem 2rem 5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .vice-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--caf-light);
+      border: 1px solid var(--caf-border);
+      color: var(--caf-dark);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .hero-thesis {
+      font-family: 'Lora', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 660px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .hero-intro {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 660px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    /* PAGE BODY */
+    .page-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .main-col { min-width: 0; }
+
+    .sidebar {
+      position: sticky;
+      top: 6rem;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--stone);
+    }
+
+    .section:first-child { border-top: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--caf-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .section h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .key-line {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--caf-dark);
+      border-left: 3px solid var(--caf-border);
+      padding: 0.75rem 1.2rem;
+      background: var(--caf-light);
+      border-radius: 0 5px 5px 0;
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    /* MECHANISM GRID */
+    .mechanism-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .mechanism-item {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .mechanism-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+
+    .mechanism-value {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .mechanism-item.full { grid-column: 1 / -1; }
+
+    /* FACTOR LIST */
+    .factor-list {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .factor-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      line-height: 1.55;
+    }
+
+    .fi-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    .fi-dot.green { background: var(--green); }
+    .fi-dot.amber { background: var(--caf); }
+    .fi-dot.red { background: var(--red-soft); }
+
+    .factor-item strong { font-weight: 500; color: var(--charcoal); }
+
+    /* COST TABLE */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.92rem;
+    }
+
+    .cost-table th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      padding: 0.6rem 1rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .cost-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--stone);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .cost-table tr:last-child td { border-bottom: none; }
+
+    .td-highlight {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+
+    .td-note {
+      color: var(--text-light);
+      font-size: 0.82rem;
+    }
+
+    /* CALCULATOR */
+    .calc-embed {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+
+    .calc-title {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+
+    .calc-sub {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 1.2rem;
+    }
+
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .calc-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .calc-group label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .calc-group select,
+    .calc-group input {
+      padding: 0.55rem 0.8rem;
+      border: 1.5px solid var(--stone);
+      border-radius: 4px;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .calc-group select:focus,
+    .calc-group input:focus { border-color: var(--caf-dark); }
+
+    .btn-calc {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--caf-dark);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.2rem;
+    }
+
+    .btn-calc:hover { background: var(--charcoal); }
+
+    .calc-result {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--caf-light);
+      border-radius: 5px;
+      border: 1px solid var(--caf-border);
+    }
+
+    .calc-result.show { display: block; }
+
+    .cr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.35rem 0;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--caf-border);
+    }
+
+    .cr-row:last-child { border-bottom: none; }
+    .cr-label { color: var(--text-light); }
+    .cr-val { font-family: 'Lora', serif; font-weight: 600; color: var(--charcoal); }
+    .cr-val.big { font-size: 1.1rem; color: var(--accent); }
+
+    /* SLEEP DEBT LOOP */
+    .sleep-loop {
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      position: relative;
+    }
+
+    .loop-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      width: 140px;
+      text-align: center;
+    }
+
+    .loop-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      border: 2px solid;
+      flex-shrink: 0;
+    }
+
+    .loop-node:nth-child(1) .loop-circle { background: #f5edda; border-color: var(--caf-border); }
+    .loop-node:nth-child(3) .loop-circle { background: #f0e6d8; border-color: #c9916c; }
+    .loop-node:nth-child(5) .loop-circle { background: #f5e6e4; border-color: #c97060; }
+    .loop-node:nth-child(7) .loop-circle { background: #f0dcd4; border-color: #b85840; }
+
+    .loop-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      line-height: 1.3;
+    }
+
+    .loop-sub {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    .loop-arrow {
+      font-size: 1.2rem;
+      color: var(--sand);
+      padding: 0 0.3rem;
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    /* FALSE PRODUCTIVITY */
+    .fp-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .fp-col {
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid var(--stone);
+    }
+
+    .fp-header {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .fp-col.belief .fp-header {
+      background: #e8f5ee;
+      color: #3a6b4c;
+    }
+
+    .fp-col.reality .fp-header {
+      background: #f5e6e4;
+      color: #8a3a30;
+    }
+
+    .fp-body {
+      background: white;
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .fp-item {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .fp-item::before { content: '–'; color: var(--sand); flex-shrink: 0; }
+
+    /* DEPENDENCY CURVE */
+    .dep-curve { margin-top: 1.5rem; }
+
+    .dep-step {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1.1rem 1.2rem;
+      position: relative;
+    }
+
+    .dep-step::before {
+      content: '';
+      position: absolute;
+      left: 2rem;
+      top: 3.2rem;
+      bottom: -1.1rem;
+      width: 1px;
+      background: var(--stone);
+    }
+
+    .dep-step:last-child::before { display: none; }
+
+    .dep-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      flex-shrink: 0;
+      border: 1.5px solid;
+    }
+
+    .dep-step.s1 .dep-num { background: #e8f5ee; border-color: #8ec5a0; color: #3a6b4c; }
+    .dep-step.s2 .dep-num { background: #f5edda; border-color: var(--caf-border); color: var(--caf-dark); }
+    .dep-step.s3 .dep-num { background: #f5e6d8; border-color: #c9916c; color: #8a4a2a; }
+    .dep-step.s4 .dep-num { background: #f5dcd4; border-color: #c97060; color: #8a3030; }
+    .dep-step.s5 .dep-num { background: #f0d0c8; border-color: #b85840; color: #7a2820; }
+
+    .dep-title { font-weight: 500; font-size: 0.95rem; color: var(--charcoal); margin-bottom: 0.2rem; }
+    .dep-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.55; }
+
+    /* HR GRID */
+    .hr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .hr-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem;
+    }
+
+    .hr-card-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+
+    .hr-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+
+    .hr-card .hr-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      background: var(--caf-light);
+      color: var(--caf-dark);
+      border: 1px solid var(--caf-border);
+      margin-bottom: 0.5rem;
+    }
+
+    /* LEDGER */
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .ledger-col {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .ledger-header {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ledger-col.green-col .ledger-header { background: #e8f5ee; color: #3a6b4c; border-bottom: 1px solid #c8e8d4; }
+    .ledger-col.red-col .ledger-header { background: #f5e6e4; color: #8a3a30; border-bottom: 1px solid #e8c8c4; }
+    .ledger-col.amber-col .ledger-header { background: #f5f0e0; color: #7a5a20; border-bottom: 1px solid #e0d0a0; }
+
+    .ledger-items {
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .ledger-item {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .ledger-item::before { content: '–'; color: var(--sand); flex-shrink: 0; }
+
+    .ledger-reassess {
+      margin-top: 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    /* CONTROL CHECK */
+    .control-check {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cc-header {
+      padding: 1rem 1.5rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .cc-questions {
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .cc-q {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .cc-check {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--stone);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .cc-check.checked { background: var(--caf-dark); border-color: var(--caf-dark); }
+    .cc-check.checked::after { content: '✓'; color: white; font-size: 11px; }
+
+    .cc-result {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--stone);
+      color: var(--text-light);
+      display: none;
+      line-height: 1.6;
+    }
+
+    .cc-result.show { display: block; }
+
+    /* SOVEREIGNTY */
+    .sovereignty {
+      background: var(--charcoal);
+      color: var(--warm-white);
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sovereignty::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(196, 154, 48, 0.05);
+    }
+
+    .sovereignty::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(196, 154, 48, 0.04);
+    }
+
+    .sovereignty h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      color: var(--warm-white);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty h2 em { color: var(--caf-mid); font-style: italic; }
+
+    .sovereignty p {
+      font-size: 0.95rem;
+      color: #a89880;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty .tagline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--caf-mid);
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* SIDEBAR */
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .sc-header {
+      padding: 0.75rem 1.2rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .sc-body { padding: 1rem 1.2rem; }
+
+    .sc-nav-link {
+      display: block;
+      padding: 0.45rem 0;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--stone);
+      transition: color 0.2s;
+    }
+
+    .sc-nav-link:last-child { border-bottom: none; }
+    .sc-nav-link:hover { color: var(--accent); }
+
+    .sc-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.85rem;
+    }
+
+    .sc-stat:last-child { border-bottom: none; }
+    .sc-stat-label { color: var(--text-light); }
+    .sc-stat-val { font-family: 'Lora', serif; font-weight: 600; color: var(--charcoal); }
+
+    .sc-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--caf-light);
+      color: var(--caf-dark);
+      border: 1px solid var(--caf-border);
+      margin: 0.2rem 0.2rem 0 0;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      .page-body { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .mechanism-grid,
+      .ledger-grid,
+      .hr-grid,
+      .fp-compare,
+      .calc-row { grid-template-columns: 1fr; }
+      .loop-arrow { display: none; }
+      .sleep-loop { flex-direction: column; align-items: center; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Vice<span>Budget</span></a>
+    <a href="index.html" class="nav-back">← All Vices</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="vice-pill">☕ Caffeine</div>
+    <h1>The Most Accepted Drug in the World Deserves the Most Honest Ledger.</h1>
+    <p class="hero-thesis">It's in your office, your commute, your morning ritual, and your afternoon crash. Nobody questions it. That's exactly why you should.</p>
+    <p class="hero-intro">Caffeine works. That's not the debate. The debate is whether what you call "energy" is actually yours — or borrowed from tomorrow. Most daily users have been in withdrawal so consistently that they've mistaken their medicated baseline for their natural one. The ledger below doesn't ask you to quit. It asks you to look.</p>
+  </div>
+
+  <div class="page-body">
+    <div class="main-col">
+
+      <!-- WHAT IT IS -->
+      <div class="section reveal" id="what">
+        <div class="section-label">The Basics</div>
+        <h2>What It Is</h2>
+        <p>Caffeine is an adenosine receptor antagonist — meaning it doesn't create energy. It blocks the signal that tells you you're tired. The tiredness is still accumulating. It's just on hold. Dopamine and adrenaline get a secondary bump, which is where the mood lift and motivation come from. The mechanism matters because understanding it changes how you interpret what you're actually feeling.</p>
+        <div class="key-line">Caffeine doesn't give you energy. It blocks the signal that tells you you're tired. The tiredness is still there — it's just deferred.</div>
+        <div class="mechanism-grid">
+          <div class="mechanism-item">
+            <div class="mechanism-label">Classification</div>
+            <div class="mechanism-value">Adenosine receptor antagonist / stimulant</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Primary action</div>
+            <div class="mechanism-value">Blocks adenosine buildup — delays fatigue signal</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Half-life</div>
+            <div class="mechanism-value">5–7 hours (200mg at 2pm = ~100mg still active at 7pm)</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Peak blood concentration</div>
+            <div class="mechanism-value">30–60 minutes after ingestion</div>
+          </div>
+          <div class="mechanism-item full">
+            <div class="mechanism-label">Delivery methods covered</div>
+            <div class="mechanism-value">Coffee, espresso, energy drinks (Monster, Red Bull, etc.), tea (black, green, matcha), pre-workout, caffeine pills, nootropic stacks (Alpha Brain, AG1, etc.)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPSIDE -->
+      <div class="section reveal" id="upside">
+        <div class="section-label">Why People Use It</div>
+        <h2>The Immediate Upside</h2>
+        <p>The benefits are real. Ignoring them would make this ledger useless. Caffeine has some of the most well-replicated cognitive effects of any substance in this category — which is part of why it became culturally invisible. Something that works this consistently gets normalized fast.</p>
+        <p>And the social ritual deserves honest acknowledgment too. The morning pause, the shared pot, the coffee shop you think in — that's not nothing. Genuine human value exists in the ritual, separate from the molecule.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Increased alertness and reaction time</strong> — Well-documented across dozens of studies. Measurable improvement in vigilance tasks.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Improved mood (short term)</strong> — Via dopamine modulation. The lift is real, especially in the first 1–2 hours post-dose.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Enhanced physical performance</strong> — Reduces perceived exertion. Useful for endurance and high-output work.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Reduced perceived effort</strong> — Tasks feel less taxing. The mechanism is adenosine blockade, not actual energy production.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Social ritual value</strong> — The shared cup, the morning routine, the coffee shop environment. Real, worth naming, worth separating from the dependency question.</div></div>
+        </div>
+      </div>
+
+      <!-- FINANCIAL -->
+      <div class="section reveal" id="financial">
+        <div class="section-label">Cost Layer 01</div>
+        <h2>Financial Cost</h2>
+        <p>Caffeine's financial cost is the easiest to dismiss — and the most underestimated at scale. Five dollars doesn't feel like money. Five dollars every weekday for a year is $1,300. Add a pre-workout, an afternoon energy drink, and a matcha on Sundays, and you're well past $2,000 before you've thought about it once.</p>
+
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Avg. Daily Cost</th>
+              <th>Annual</th>
+              <th>5-Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Coffee shop (1–2 drinks/day)</td>
+              <td>$5–9</td>
+              <td class="td-highlight">$1,825–3,285</td>
+              <td>$9K–16K</td>
+            </tr>
+            <tr>
+              <td>Home brew</td>
+              <td>$0.75–2</td>
+              <td class="td-highlight">$275–730</td>
+              <td>$1.4K–3.6K</td>
+            </tr>
+            <tr>
+              <td>Energy drinks (daily)</td>
+              <td>$3–5</td>
+              <td class="td-highlight">$1,095–1,825</td>
+              <td>$5.5K–9K</td>
+            </tr>
+            <tr>
+              <td>Pre-workout (daily)</td>
+              <td>$1.50–3</td>
+              <td class="td-highlight">$548–1,095</td>
+              <td>$2.7K–5.5K</td>
+            </tr>
+            <tr>
+              <td>Nootropic stacks</td>
+              <td>$3–8</td>
+              <td class="td-highlight">$1,095–2,920</td>
+              <td>$5.5K–14.6K</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="td-note">Costs based on US averages. Multiple sources compound quickly — many users pull from 2–3 categories simultaneously.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="calc-embed">
+          <div class="calc-title">Your Caffeine Cost</div>
+          <div class="calc-sub">Primary source only. Most people underestimate by stacking multiple sources.</div>
+          <div class="calc-row">
+            <div class="calc-group">
+              <label>Primary Source</label>
+              <select id="c-method">
+                <option value="">Select…</option>
+                <option value="shop">Coffee shop</option>
+                <option value="home">Home brew</option>
+                <option value="energy">Energy drinks</option>
+                <option value="preworkout">Pre-workout</option>
+                <option value="nootropic">Nootropic stack</option>
+                <option value="pills">Caffeine pills</option>
+              </select>
+            </div>
+            <div class="calc-group">
+              <label>Daily Spend ($)</label>
+              <input type="number" id="c-spend" placeholder="e.g. 6" min="0" step="0.50" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calcCaf()">Calculate →</button>
+          <div class="calc-result" id="c-result">
+            <div class="cr-row"><span class="cr-label">Monthly</span><span class="cr-val" id="cr-mo">—</span></div>
+            <div class="cr-row"><span class="cr-label">Annual</span><span class="cr-val big" id="cr-yr">—</span></div>
+            <div class="cr-row"><span class="cr-label">5-Year</span><span class="cr-val" id="cr-5">—</span></div>
+            <div class="cr-row"><span class="cr-label">That's roughly…</span><span class="cr-val" id="cr-eq">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHYSICAL -->
+      <div class="section reveal" id="physical">
+        <div class="section-label">Cost Layer 02</div>
+        <h2>Physical Cost</h2>
+        <p>Most people know the broad strokes — jitteriness, elevated heart rate, the crash. The subtler costs are the ones worth examining, because they compound silently and are rarely connected back to caffeine as the cause.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Sleep architecture disruption</strong> — The half-life is longer than most people account for. A 2pm cup still has 50mg active at midnight. Even if you fall asleep, deep sleep and REM quality are measurably reduced.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Cortisol amplification</strong> — Cortisol naturally peaks 30–45 minutes after waking. Dosing caffeine during this window stacks stimulant effects, increasing anxiety and accelerating the afternoon crash.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Adrenal stress response</strong> — Chronic high-dose use activates the sympathetic nervous system repeatedly. Over time, this contributes to elevated baseline anxiety and fatigue.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Tolerance development</strong> — Receptor downregulation begins within days of consistent use. Within weeks, the same dose produces diminishing returns. The enhancement fades. The dependency remains.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Withdrawal symptoms</strong> — Headache, brain fog, fatigue, irritability. Onset within 12–24 hours. Peak at 20–51 hours. Often misread as "needing coffee" rather than recovering from it.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>GI sensitivity</strong> — Fasted caffeine use stimulates acid production and gut motility. Manageable for most, significant for some.</div></div>
+        </div>
+      </div>
+
+      <!-- SLEEP DEBT LOOP -->
+      <div class="section reveal" id="sleep">
+        <div class="section-label">The Hidden Cost</div>
+        <h2>The Sleep Debt Loop</h2>
+        <p>This is caffeine's most insidious cost — and the one most users are actively inside of without realizing it. Poor sleep creates demand for caffeine. Caffeine disrupts sleep. Worse sleep creates more demand. The loop is self-reinforcing, and it moves slowly enough that most people never identify it as a loop at all.</p>
+
+        <div class="sleep-loop">
+          <div class="loop-node">
+            <div class="loop-circle">😴</div>
+            <div class="loop-label">Poor Sleep</div>
+            <div class="loop-sub">Low energy, foggy, slow to start</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-node">
+            <div class="loop-circle">☕</div>
+            <div class="loop-label">Caffeine to Compensate</div>
+            <div class="loop-sub">Dose increases to feel functional</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-node">
+            <div class="loop-circle">🌙</div>
+            <div class="loop-label">Sleep Disrupted</div>
+            <div class="loop-sub">Half-life active at bedtime, REM suppressed</div>
+          </div>
+          <div class="loop-arrow">→</div>
+          <div class="loop-node">
+            <div class="loop-circle">🔁</div>
+            <div class="loop-label">Repeat</div>
+            <div class="loop-sub">Baseline degrades, tolerance increases</div>
+          </div>
+        </div>
+
+        <p>Most people can't tell you what their unmedicated baseline feels like anymore. They've been in a mild state of withdrawal every morning for years. The "caffeine boost" they feel isn't a lift above normal — it's a return to it. The loop is the story.</p>
+      </div>
+
+      <!-- PSYCHOLOGICAL -->
+      <div class="section reveal" id="psychological">
+        <div class="section-label">Cost Layer 02b</div>
+        <h2>Psychological Cost</h2>
+        <p>The psychological costs of caffeine are easy to miss because they're diffuse — they show up as baseline anxiety, an inability to think without it, an identity built around needing it. None of these announce themselves. They just become the texture of your day.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Anxiety amplification</strong> — Caffeine is a reliable anxiety amplifier, especially above 200mg/day or in sensitive users. Many people treating their anxiety never examine caffeine intake as a variable.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Mood dependency</strong> — Low and irritable without it, normal with it. Not "boosted" — just restored. That's a different relationship than most users acknowledge.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Cognitive outsourcing</strong> — "Can't think without my coffee" stops being a joke and becomes a genuine dependency on external input to initiate cognition. Same pattern as nicotine, different molecule.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Dosing decision fatigue</strong> — When to dose, how much, what's the cut-off, will this keep me up — these micro-decisions consume low-grade mental bandwidth across the day.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Borrowed identity</strong> — "I'm not a morning person without coffee" is a statement about dependency, not personality. Mistaking the two makes the habit invisible.</div></div>
+        </div>
+      </div>
+
+      <!-- OPPORTUNITY -->
+      <div class="section reveal" id="opportunity">
+        <div class="section-label">Cost Layer 03</div>
+        <h2>Opportunity Cost</h2>
+        <p>Opportunity cost is what the caffeine habit makes harder — not what it takes directly. These costs are invisible on the receipt and rarely get counted.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Sleep quality tax</strong> — Reduced REM and deep sleep affects recovery, emotional regulation, creative thinking, and next-day decision quality. This is a daily compounding cost most users don't trace back to caffeine.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Afternoon crash productivity loss</strong> — The post-caffeine trough typically runs 2–4 hours. Most users re-dose rather than tracking the output loss. The re-dose delays sleep. The loop continues.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Anxiety overhead</strong> — Elevated baseline anxiety from chronic caffeine use reduces effective cognitive output even on tasks where alertness is high. You can be alert and impaired simultaneously.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Financial drift</strong> — $6/day at a coffee shop is $2,190/year. That's not a vice budget. That's a vacation budget spent on a habit you've never fully examined.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Genuine rest becoming impossible</strong> — High-dependency users often can't fully downregulate. Rest feels unproductive, stillness feels anxious. The system never fully cycles down.</div></div>
+        </div>
+      </div>
+
+      <!-- FALSE PRODUCTIVITY -->
+      <div class="section reveal" id="false">
+        <div class="section-label">The Sharp Edge</div>
+        <h2>The False Productivity Problem</h2>
+        <p>This is caffeine's most honest conversation — and the one most people avoid. Once tolerance is established, the question shifts from "does it work?" to "what is it actually doing?"</p>
+
+        <p>Two concepts worth naming directly:</p>
+
+        <p><strong style="color: var(--charcoal);">Repayment vs. Enhancement.</strong> If your dose is restoring you to baseline after overnight withdrawal, you're not enhancing anything. You're repaying a debt you created yesterday. The net effect is approximately zero — with interest in the form of dependency.</p>
+
+        <p><strong style="color: var(--charcoal);">The Tolerance Ceiling.</strong> Once established, heavy users often perform below their uncaffeinated potential on missed-dose days — and only reach approximate normal when dosed. The enhancement window closed. The dependency window didn't.</p>
+
+        <div class="fp-compare">
+          <div class="fp-col belief">
+            <div class="fp-header">✦ What You Think Is Happening</div>
+            <div class="fp-body">
+              <div class="fp-item">Caffeine boosts my performance above baseline</div>
+              <div class="fp-item">I'm sharper, faster, more focused with it</div>
+              <div class="fp-item">Missing a dose makes me tired</div>
+              <div class="fp-item">I choose to use it — it's part of my routine</div>
+              <div class="fp-item">It helps me think more clearly</div>
+            </div>
+          </div>
+          <div class="fp-col reality">
+            <div class="fp-header">↳ What's Often Actually Happening</div>
+            <div class="fp-body">
+              <div class="fp-item">Caffeine restores you to your pre-withdrawal baseline</div>
+              <div class="fp-item">You're experiencing relief from dependence, not enhancement</div>
+              <div class="fp-item">Missing a dose triggers withdrawal — not natural fatigue</div>
+              <div class="fp-item">The routine is managing dependency on a schedule</div>
+              <div class="fp-item">Your unmedicated thinking capacity is unknown to you</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEPENDENCY CURVE -->
+      <div class="section reveal" id="curve">
+        <div class="section-label">The Progression</div>
+        <h2>The Dependency Curve</h2>
+        <p>The slide from tool to requirement happens gradually enough that most people miss it entirely. Where are you on this curve? The honest answer is usually one step further than your first instinct.</p>
+        <div class="dep-curve">
+          <div class="dep-step s1">
+            <div class="dep-num">1</div>
+            <div class="dep-content">
+              <div class="dep-title">Occasional Use</div>
+              <div class="dep-desc">Situational. Chosen. Easy to skip without noticeable effect. No headache, no fog, no irritability.</div>
+            </div>
+          </div>
+          <div class="dep-step s2">
+            <div class="dep-num">2</div>
+            <div class="dep-content">
+              <div class="dep-title">Daily Ritual</div>
+              <div class="dep-desc">Consistent timing, pleasant association. Mild headache if skipped. Still feels like a choice. Dose is stable.</div>
+            </div>
+          </div>
+          <div class="dep-step s3">
+            <div class="dep-num">3</div>
+            <div class="dep-content">
+              <div class="dep-title">Functional Dependency</div>
+              <div class="dep-desc">Noticeable cognitive impairment without morning dose. Mood affected. "Needing" it starts to feel different from "wanting" it.</div>
+            </div>
+          </div>
+          <div class="dep-step s4">
+            <div class="dep-num">4</div>
+            <div class="dep-content">
+              <div class="dep-title">Baseline Medication</div>
+              <div class="dep-desc">Using caffeine to feel normal, not good. Tolerance high, enhancement minimal. Dose has likely increased over time without a deliberate decision.</div>
+            </div>
+          </div>
+          <div class="dep-step s5">
+            <div class="dep-num">5</div>
+            <div class="dep-content">
+              <div class="dep-title">Tolerance Plateau</div>
+              <div class="dep-desc">High dose required to reach functional. Enhancement is gone. The original upside has been replaced entirely by dependency maintenance.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HARM REDUCTION -->
+      <div class="section reveal" id="reduction">
+        <div class="section-label">Agency, Not Abstinence</div>
+        <h2>Harm Reduction Strategies</h2>
+        <p>None of these require quitting. They require paying attention — which is harder, and more useful.</p>
+        <div class="hr-grid">
+          <div class="hr-card">
+            <div class="hr-tag">Timing</div>
+            <div class="hr-card-title">Delay First Dose 90 Minutes</div>
+            <div class="hr-card-desc">Cortisol peaks 30–45 min after waking. Stacking caffeine on that peak amplifies anxiety and accelerates the crash. Waiting 90 minutes lets cortisol clear and extends the effective window.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Cut-off</div>
+            <div class="hr-card-title">Hard Stop at 1–2pm</div>
+            <div class="hr-card-desc">Half-life math: 200mg at 2pm = ~100mg active at 7pm, ~50mg at midnight. That "harmless afternoon coffee" is doing something to your sleep whether you feel it or not.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Reset</div>
+            <div class="hr-card-title">Scheduled Tolerance Breaks</div>
+            <div class="hr-card-desc">Even 5–7 days off changes your baseline measurably. The first 2–3 days are rough. Day 4 onward, most people report cleaner energy. It's information worth having.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Tracking</div>
+            <div class="hr-card-title">Log Actual Daily Intake</div>
+            <div class="hr-card-desc">Most people underestimate by 30–50%. A large coffee shop coffee can run 300–400mg. A pre-workout + coffee + energy drink is easily 600mg. Know your number.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Simplification</div>
+            <div class="hr-card-title">Single-Source Rule</div>
+            <div class="hr-card-desc">Pick one delivery method. It makes dose tracking possible and prevents the silent stacking that moves people from Level 2 to Level 4 without noticing.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Hydration</div>
+            <div class="hr-card-title">Match Water to Caffeine</div>
+            <div class="hr-card-desc">Mild diuretic effect compounds on days with heavy output. 1:1 water ratio per caffeinated drink is a useful floor, not a ceiling.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEDGER -->
+      <div class="section reveal" id="ledger">
+        <div class="section-label">The Summary</div>
+        <h2>Ledger</h2>
+        <p>Caffeine is one of the most effective cognitive tools available — and one of the easiest to stop actually using without noticing.</p>
+        <div class="ledger-grid">
+          <div class="ledger-col green-col">
+            <div class="ledger-header">✓ Worth It When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">First dose is delayed, not reflexive</div>
+              <div class="ledger-item">Dose is stable and hasn't crept up</div>
+              <div class="ledger-item">You can skip a day without a headache or fog</div>
+              <div class="ledger-item">Sleep quality is genuinely unaffected</div>
+              <div class="ledger-item">The ritual has value you've consciously chosen</div>
+            </div>
+          </div>
+          <div class="ledger-col red-col">
+            <div class="ledger-header">⚠ Risky When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">Morning function requires it before anything else</div>
+              <div class="ledger-item">Afternoon crashes are regular and unplanned</div>
+              <div class="ledger-item">Anxiety is elevated and caffeine hasn't been examined</div>
+              <div class="ledger-item">Sleep problems exist alongside late dosing</div>
+              <div class="ledger-item">Dose has increased without a deliberate reason</div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-reassess ledger-col amber-col">
+          <div class="ledger-header">↺ Reassess When</div>
+          <div class="ledger-items">
+            <div class="ledger-item">You can't remember what your natural energy feels like</div>
+            <div class="ledger-item">You've increased dose without a deliberate decision to do so</div>
+            <div class="ledger-item">The word "decaf" genuinely irritates you</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL CHECK -->
+      <div class="section reveal" id="check">
+        <div class="section-label">Quick Self-Assessment</div>
+        <h2>Control Check</h2>
+        <p>Five questions. Check the ones that are currently true — not aspirationally true.</p>
+        <div class="control-check">
+          <div class="cc-header">Check all that apply</div>
+          <div class="cc-questions">
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My first dose is not the first thing I think about when I wake up.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My daily dose has not increased over the past 6–12 months.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I can skip a day without a headache, brain fog, or notable irritability.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My last caffeine of the day is before 2pm consistently.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I know my approximate daily intake in milligrams.</span>
+            </div>
+          </div>
+          <div class="cc-result" id="cc-result"></div>
+        </div>
+      </div>
+
+      <!-- SOVEREIGNTY -->
+      <div class="sovereignty reveal">
+        <h2>When did caffeine stop being a choice and start being <em>a requirement?</em></h2>
+        <p>Most people can't answer that. Not because the transition was dramatic — but because it wasn't. It was a Tuesday. Then another Tuesday. Then it was just the way things are.</p>
+        <p>Nobody decided to depend on caffeine. They just never decided not to. And at some point the question of whether it was still a choice stopped occurring to them.</p>
+        <p>That's not a verdict. That's just where clarity starts.</p>
+        <div class="tagline">Everything has a cost. You choose which ones to pay.</div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sc-header">On This Page</div>
+        <div class="sc-body">
+          <a href="#what" class="sc-nav-link">What It Is</a>
+          <a href="#upside" class="sc-nav-link">The Upside</a>
+          <a href="#financial" class="sc-nav-link">Financial Cost</a>
+          <a href="#physical" class="sc-nav-link">Physical Cost</a>
+          <a href="#sleep" class="sc-nav-link">Sleep Debt Loop</a>
+          <a href="#psychological" class="sc-nav-link">Psychological Cost</a>
+          <a href="#opportunity" class="sc-nav-link">Opportunity Cost</a>
+          <a href="#false" class="sc-nav-link">False Productivity</a>
+          <a href="#curve" class="sc-nav-link">Dependency Curve</a>
+          <a href="#reduction" class="sc-nav-link">Harm Reduction</a>
+          <a href="#ledger" class="sc-nav-link">Ledger</a>
+          <a href="#check" class="sc-nav-link">Control Check</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Quick Stats</div>
+        <div class="sc-body">
+          <div class="sc-stat">
+            <span class="sc-stat-label">Onset</span>
+            <span class="sc-stat-val">15–45 min</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Peak effect</span>
+            <span class="sc-stat-val">30–60 min</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Half-life</span>
+            <span class="sc-stat-val">5–7 hours</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Cortisol window</span>
+            <span class="sc-stat-val">Avoid 0–90 min</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Tolerance onset</span>
+            <span class="sc-stat-val">1–4 days</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Withdrawal peak</span>
+            <span class="sc-stat-val">20–51 hours</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Recommended max</span>
+            <span class="sc-stat-val">400mg/day</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Cost Layers</div>
+        <div class="sc-body">
+          <span class="sc-tag">Financial</span>
+          <span class="sc-tag">Physical</span>
+          <span class="sc-tag">Sleep</span>
+          <span class="sc-tag">Psychological</span>
+          <span class="sc-tag">Opportunity</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Other Vices</div>
+        <div class="sc-body">
+          <a href="nicotine.html" class="sc-nav-link">🚬 Nicotine</a>
+          <a href="#" class="sc-nav-link">🌿 THC / Cannabis</a>
+          <a href="#" class="sc-nav-link">🥃 Alcohol</a>
+          <a href="#" class="sc-nav-link">⚗️ Other Substances</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <script>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    // CALCULATOR
+    const equivs = [
+      { t: 500, l: 'a month of streaming subscriptions' },
+      { t: 1000, l: 'a quality espresso machine (ironic, we know)' },
+      { t: 2000, l: 'a month of rent in many cities' },
+      { t: 3500, l: 'a used car down payment' },
+      { t: 6000, l: 'a cross-country trip' },
+      { t: 12000, l: 'a year of community college' },
+      { t: Infinity, l: 'a number worth sitting with' }
+    ];
+
+    function getEquiv(n) { return equivs.find(e => n < e.t)?.l || 'something significant'; }
+    function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+    function calcCaf() {
+      const method = document.getElementById('c-method').value;
+      const spend = parseFloat(document.getElementById('c-spend').value);
+      if (!method || isNaN(spend) || spend <= 0) {
+        alert('Please select a source and enter a daily spend.');
+        return;
+      }
+      const annual = spend * 365;
+      const monthly = annual / 12;
+      const five = annual * 5;
+      document.getElementById('cr-mo').textContent = fmt(monthly);
+      document.getElementById('cr-yr').textContent = fmt(annual);
+      document.getElementById('cr-5').textContent = fmt(five);
+      document.getElementById('cr-eq').textContent = getEquiv(annual);
+      document.getElementById('c-result').classList.add('show');
+    }
+
+    // CONTROL CHECK
+    function toggleCheck(el) {
+      el.classList.toggle('checked');
+      updateCheckResult();
+    }
+
+    function updateCheckResult() {
+      const checks = document.querySelectorAll('.cc-check');
+      const count = [...checks].filter(c => c.classList.contains('checked')).length;
+      const result = document.getElementById('cc-result');
+      if (count === 0) { result.classList.remove('show'); return; }
+
+      let msg = '';
+      if (count === 5) {
+        msg = '5/5 — Strong control indicators. Caffeine appears to be a chosen tool, not a managed dependency.';
+      } else if (count >= 3) {
+        msg = `${count}/5 — Some control present, but gaps worth examining. Which questions couldn't you check — and why?`;
+      } else {
+        msg = `${count}/5 — Fewer control indicators than expected. Worth an honest look at where on the dependency curve you actually are.`;
+      }
+      result.textContent = msg;
+      result.classList.add('show');
+    }
+  </script>
+
+</body>
+</html>
