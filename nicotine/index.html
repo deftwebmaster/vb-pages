@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nicotine — ViceBudget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- * lone wolf, steady course | Matt Livingston -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #f5f0e8;
+      --stone: #e8e0d0;
+      --sand: #d4c9b4;
+      --bark: #8c7355;
+      --cedar: #5c4a32;
+      --charcoal: #2a2420;
+      --text: #3a3028;
+      --text-light: #6b5f52;
+      --accent: #b85c38;
+      --accent-soft: #d4795a;
+
+      /* Nicotine palette */
+      --nic: #c4a882;
+      --nic-dark: #8a6a3e;
+      --nic-light: #f0e6d6;
+      --nic-mid: #d4b896;
+
+      --green: #4a7c59;
+      --red-soft: #9e4a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 247, 242, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cedar);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem 2rem 5rem;
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .vice-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--nic-light);
+      border: 1px solid var(--nic-mid);
+      color: var(--nic-dark);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.6rem, 5vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .hero-thesis {
+      font-family: 'Lora', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 640px;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .hero-intro {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 640px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    /* SIDEBAR LAYOUT */
+    .page-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .main-col { min-width: 0; }
+
+    .sidebar {
+      position: sticky;
+      top: 6rem;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--stone);
+    }
+
+    .section:first-child { border-top: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--nic-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .section h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    /* WHAT IT IS */
+    .mechanism-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .mechanism-item {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .mechanism-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+
+    .mechanism-value {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    /* UPSIDE / COST LISTS */
+    .factor-list {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .factor-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      line-height: 1.55;
+    }
+
+    .factor-item .fi-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--nic);
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    .factor-item .fi-dot.green { background: var(--green); }
+    .factor-item .fi-dot.red { background: var(--red-soft); }
+    .factor-item .fi-dot.amber { background: var(--nic-dark); }
+
+    .factor-item strong {
+      font-weight: 500;
+      color: var(--charcoal);
+    }
+
+    /* FINANCIAL */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.92rem;
+    }
+
+    .cost-table th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      padding: 0.6rem 1rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .cost-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--stone);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .cost-table tr:last-child td { border-bottom: none; }
+
+    .cost-table .td-highlight {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+
+    .cost-table .td-label {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    /* CALCULATOR EMBED */
+    .calc-embed {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+
+    .calc-title {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+
+    .calc-sub {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 1.2rem;
+    }
+
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .calc-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .calc-group label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .calc-group select,
+    .calc-group input {
+      padding: 0.55rem 0.8rem;
+      border: 1.5px solid var(--stone);
+      border-radius: 4px;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .calc-group select:focus,
+    .calc-group input:focus { border-color: var(--nic-dark); }
+
+    .btn-calc {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--nic-dark);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.2rem;
+    }
+
+    .btn-calc:hover { background: var(--cedar); }
+
+    .calc-result {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--nic-light);
+      border-radius: 5px;
+      border: 1px solid var(--nic-mid);
+    }
+
+    .calc-result.show { display: block; }
+
+    .cr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.35rem 0;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--nic-mid);
+    }
+
+    .cr-row:last-child { border-bottom: none; }
+    .cr-label { color: var(--text-light); }
+    .cr-val {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .cr-val.big { font-size: 1.1rem; color: var(--accent); }
+
+    /* DEPENDENCY CURVE */
+    .dep-curve {
+      margin-top: 1.5rem;
+      position: relative;
+    }
+
+    .dep-step {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1.1rem 1.2rem;
+      position: relative;
+    }
+
+    .dep-step::before {
+      content: '';
+      position: absolute;
+      left: 2rem;
+      top: 3.2rem;
+      bottom: -1.1rem;
+      width: 1px;
+      background: var(--stone);
+    }
+
+    .dep-step:last-child::before { display: none; }
+
+    .dep-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      flex-shrink: 0;
+      border: 1.5px solid;
+    }
+
+    .dep-step.s1 .dep-num { background: #e8f5ee; border-color: #8ec5a0; color: #3a6b4c; }
+    .dep-step.s2 .dep-num { background: #f0ead8; border-color: #c9b483; color: #7a5f2a; }
+    .dep-step.s3 .dep-num { background: #f5e6d8; border-color: #c9916c; color: #8a4a2a; }
+    .dep-step.s4 .dep-num { background: #f5dcd4; border-color: #c97060; color: #8a3030; }
+    .dep-step.s5 .dep-num { background: #f0d0c8; border-color: #b85840; color: #7a2820; }
+
+    .dep-content {}
+    .dep-title {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      margin-bottom: 0.2rem;
+    }
+
+    .dep-desc {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+
+    /* LEDGER */
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .ledger-col {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .ledger-header {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ledger-col.green-col .ledger-header {
+      background: #e8f5ee;
+      color: #3a6b4c;
+      border-bottom: 1px solid #c8e8d4;
+    }
+
+    .ledger-col.red-col .ledger-header {
+      background: #f5e6e4;
+      color: #8a3a30;
+      border-bottom: 1px solid #e8c8c4;
+    }
+
+    .ledger-col.amber-col .ledger-header {
+      background: #f5f0e0;
+      color: #7a5a20;
+      border-bottom: 1px solid #e0d0a0;
+    }
+
+    .ledger-items {
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .ledger-item {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .ledger-item::before {
+      content: '–';
+      color: var(--sand);
+      flex-shrink: 0;
+    }
+
+    /* LEDGER REASSESS - full width */
+    .ledger-reassess {
+      margin-top: 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    /* HARM REDUCTION */
+    .hr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .hr-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem;
+    }
+
+    .hr-card-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+
+    .hr-card-desc {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+
+    /* CONTROL CHECK */
+    .control-check {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cc-header {
+      padding: 1rem 1.5rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .cc-questions {
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .cc-q {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .cc-check {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--stone);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .cc-check.checked {
+      background: var(--nic-dark);
+      border-color: var(--nic-dark);
+    }
+
+    .cc-check.checked::after {
+      content: '✓';
+      color: white;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .cc-result {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--stone);
+      color: var(--text-light);
+      display: none;
+    }
+
+    .cc-result.show { display: block; }
+
+    /* SOVEREIGNTY */
+    .sovereignty {
+      background: var(--charcoal);
+      color: var(--warm-white);
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sovereignty::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(196, 168, 130, 0.06);
+    }
+
+    .sovereignty h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      color: var(--warm-white);
+    }
+
+    .sovereignty h2 em {
+      color: var(--nic-mid);
+      font-style: italic;
+    }
+
+    .sovereignty p {
+      font-size: 0.95rem;
+      color: #a89880;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1rem;
+    }
+
+    .sovereignty .tagline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--nic-mid);
+      margin-top: 1.5rem;
+    }
+
+    /* SIDEBAR WIDGETS */
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .sc-header {
+      padding: 0.75rem 1.2rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .sc-body {
+      padding: 1rem 1.2rem;
+    }
+
+    .sc-nav-link {
+      display: block;
+      padding: 0.45rem 0;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--stone);
+      transition: color 0.2s;
+    }
+
+    .sc-nav-link:last-child { border-bottom: none; }
+    .sc-nav-link:hover { color: var(--accent); }
+
+    .sc-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.85rem;
+    }
+
+    .sc-stat:last-child { border-bottom: none; }
+    .sc-stat-label { color: var(--text-light); }
+    .sc-stat-val {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .sc-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--nic-light);
+      color: var(--nic-dark);
+      border: 1px solid var(--nic-mid);
+      margin: 0.2rem 0.2rem 0 0;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+      .page-body {
+        grid-template-columns: 1fr;
+      }
+      .sidebar { position: static; }
+      .mechanism-grid, .ledger-grid, .hr-grid { grid-template-columns: 1fr; }
+      .calc-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Vice<span>Budget</span></a>
+    <a href="index.html" class="nav-back">← All Vices</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="vice-pill">🚬 Nicotine</div>
+    <h1>A Tool That Can Become Infrastructure.</h1>
+    <p class="hero-thesis">Nicotine can sharpen focus — or quietly become required for it. The question isn't whether it works. It's whether you're still choosing it.</p>
+    <p class="hero-intro">Nicotine is often framed as either harmless or dangerous. The reality is quieter than that. It can increase alertness, improve task initiation, and provide a sense of cognitive clarity. Over time, though, what once felt optional can become part of your baseline. Many people use nicotine because it works. The ledger matters precisely because the upside is real.</p>
+  </div>
+
+  <!-- PAGE BODY -->
+  <div class="page-body">
+    <div class="main-col">
+
+      <!-- WHAT IT IS -->
+      <div class="section reveal" id="what">
+        <div class="section-label">The Basics</div>
+        <h2>What It Is</h2>
+        <p>Nicotine is a stimulant alkaloid that acts on nicotinic acetylcholine receptors throughout the nervous system. It triggers dopamine and norepinephrine release — which explains the alertness, the mood lift, and the motivation bump. It's not magic. It's chemistry. And like most chemistry, context determines the outcome.</p>
+        <div class="mechanism-grid">
+          <div class="mechanism-item">
+            <div class="mechanism-label">Classification</div>
+            <div class="mechanism-value">Stimulant alkaloid</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Primary receptor</div>
+            <div class="mechanism-value">Nicotinic acetylcholine (nAChR)</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Neurotransmitters affected</div>
+            <div class="mechanism-value">Dopamine, norepinephrine, acetylcholine</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Common delivery</div>
+            <div class="mechanism-value">Pouches, vaping, cigarettes, gum, patches</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPSIDE -->
+      <div class="section reveal" id="upside">
+        <div class="section-label">Why People Use It</div>
+        <h2>The Immediate Upside</h2>
+        <p>Acknowledging the upside isn't an endorsement. It's honesty — and honesty is what makes a real ledger. For some people, especially those with ADHD or activation-based attention patterns, nicotine can function as a bridge across resistance. It can make starting difficult tasks easier. It can sharpen attention in short bursts. These benefits are documented, not imagined.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Increased focus</strong> — Particularly effective for sustained attention on low-stimulation tasks.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Faster task initiation</strong> — Reduces the friction of starting, especially for complex or unpleasant work.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Appetite suppression</strong> — A practical effect some users intentionally deploy.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Mood stabilization</strong> — In the short term, smooths anxiety peaks and low-energy troughs.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Short-term cognitive sharpening</strong> — Working memory and processing speed show measurable short-term improvement in study conditions.</div></div>
+        </div>
+      </div>
+
+      <!-- FINANCIAL -->
+      <div class="section reveal" id="financial">
+        <div class="section-label">Cost Layer 01</div>
+        <h2>Financial Cost</h2>
+        <p>This is the most visible cost — and still the most consistently underestimated. Small daily amounts feel negligible until you annualize them. Run your own numbers below.</p>
+
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Delivery Method</th>
+              <th>Avg. Daily Cost</th>
+              <th>Annual Cost</th>
+              <th>5-Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cigarettes (1 pack/day)</td>
+              <td>~$10–14</td>
+              <td class="td-highlight">~$3,650–5,110</td>
+              <td>~$18K–25K</td>
+            </tr>
+            <tr>
+              <td>Vaping (daily)</td>
+              <td>~$5–8</td>
+              <td class="td-highlight">~$1,825–2,920</td>
+              <td>~$9K–14K</td>
+            </tr>
+            <tr>
+              <td>Nicotine pouches</td>
+              <td>~$3–6</td>
+              <td class="td-highlight">~$1,095–2,190</td>
+              <td>~$5K–11K</td>
+            </tr>
+            <tr>
+              <td class="td-label" colspan="4">Costs vary by region, brand, and frequency. These are estimates for daily users.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="calc-embed">
+          <div class="calc-title">Your Nicotine Cost</div>
+          <div class="calc-sub">Enter your usage to see the real annual number.</div>
+          <div class="calc-row">
+            <div class="calc-group">
+              <label>Delivery Method</label>
+              <select id="n-method">
+                <option value="">Select…</option>
+                <option value="cigarettes">Cigarettes</option>
+                <option value="vaping">Vaping</option>
+                <option value="pouches">Pouches / ZYN</option>
+                <option value="gum">Gum / Patch</option>
+              </select>
+            </div>
+            <div class="calc-group">
+              <label>Daily Spend ($)</label>
+              <input type="number" id="n-spend" placeholder="e.g. 10" min="0" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calcNic()">Calculate →</button>
+          <div class="calc-result" id="n-result">
+            <div class="cr-row"><span class="cr-label">Monthly</span><span class="cr-val" id="nr-mo">—</span></div>
+            <div class="cr-row"><span class="cr-label">Annual</span><span class="cr-val big" id="nr-yr">—</span></div>
+            <div class="cr-row"><span class="cr-label">5-Year</span><span class="cr-val" id="nr-5">—</span></div>
+            <div class="cr-row"><span class="cr-label">That's roughly…</span><span class="cr-val" id="nr-eq">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHYSICAL -->
+      <div class="section reveal" id="physical">
+        <div class="section-label">Cost Layer 02</div>
+        <h2>Physical Cost</h2>
+        <p>Most people know the broad strokes. The details matter more than the headlines.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Cardiovascular strain</strong> — Increases heart rate and blood pressure with each dose. Cumulative at high frequency.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Sleep disruption</strong> — Nicotine is a stimulant. Late dosing delays sleep onset and suppresses REM quality, even in users who don't notice it.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Tolerance development</strong> — Receptor downregulation means the same dose produces diminishing returns over time, requiring more to achieve the same effect.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Withdrawal symptoms</strong> — Irritability, difficulty concentrating, anxiety, and hunger are reliable withdrawal markers. Their intensity is a proxy for dependency depth.</div></div>
+        </div>
+      </div>
+
+      <!-- PSYCHOLOGICAL -->
+      <div class="section reveal" id="psychological">
+        <div class="section-label">Cost Layer 02b</div>
+        <h2>Psychological Cost</h2>
+        <p>This is where the nuance lives. The psychological cost of nicotine isn't primarily about addiction in the conventional sense — it's about what your brain begins to outsource. When nicotine becomes your activation mechanism, focus stops being self-generated and starts being chemically triggered. That shift is subtle. It's also significant.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Cue-dependent focus</strong> — You begin to associate certain triggers (smoking break, morning routine, work start) with cognitive readiness. The association becomes the readiness.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Baseline dopamine recalibration</strong> — Sustained use resets your resting dopamine baseline downward. What felt neutral before can feel like low-grade fog without it.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Habit loops</strong> — Stress → nicotine → relief → reinforcement. The loop tightens over time, especially under sustained pressure.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Stress-linked escalation</strong> — High-stress periods tend to increase dose frequency. If you track usage, you'll see the spikes. Most people don't track.</div></div>
+        </div>
+      </div>
+
+      <!-- OPPORTUNITY -->
+      <div class="section reveal" id="opportunity">
+        <div class="section-label">Cost Layer 03</div>
+        <h2>Opportunity Cost</h2>
+        <p>This is the cost most health content skips entirely. Opportunity cost isn't about what nicotine takes from you directly — it's about what the habit structure makes harder to do.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Reliance for task initiation</strong> — If you need a dose to start meaningful work, your ability to initiate without it atrophies. Slowly. Reliably.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Mental bandwidth tied to dosing</strong> — Tracking supply, planning around breaks, and managing cravings consume low-grade cognitive space throughout the day.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Financial drift</strong> — $5/day compounds to $1,825/year. What would that capital do directed elsewhere? That's not hypothetical — it's a real trade.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Behavioral defaulting</strong> — Automatic use bypasses the choice point entirely. When you stop choosing, the habit is running you.</div></div>
+        </div>
+      </div>
+
+      <!-- DEPENDENCY CURVE -->
+      <div class="section reveal" id="curve">
+        <div class="section-label">The Progression</div>
+        <h2>The Dependency Curve</h2>
+        <p>Dependency doesn't announce itself. It's a gradient, not a threshold. Most people can identify which step they're currently on — if they're willing to look.</p>
+        <div class="dep-curve">
+          <div class="dep-step s1">
+            <div class="dep-num">1</div>
+            <div class="dep-content">
+              <div class="dep-title">Occasional Tool</div>
+              <div class="dep-desc">Used situationally. Specific context. Easy to skip. No real pull when it's unavailable.</div>
+            </div>
+          </div>
+          <div class="dep-step s2">
+            <div class="dep-num">2</div>
+            <div class="dep-content">
+              <div class="dep-title">Performance Enhancer</div>
+              <div class="dep-desc">Regular use tied to output. Still feels chosen. Dose is stable. Sleep mostly unaffected.</div>
+            </div>
+          </div>
+          <div class="dep-step s3">
+            <div class="dep-num">3</div>
+            <div class="dep-content">
+              <div class="dep-title">Daily Habit</div>
+              <div class="dep-desc">Consistent schedule. Mild irritability without it. Starting to feel like maintenance rather than enhancement.</div>
+            </div>
+          </div>
+          <div class="dep-step s4">
+            <div class="dep-num">4</div>
+            <div class="dep-content">
+              <div class="dep-title">Structural Baseline</div>
+              <div class="dep-desc">Required to feel normal. Cognitive performance feels degraded without it. Not choosing to use — defaulting to it.</div>
+            </div>
+          </div>
+          <div class="dep-step s5">
+            <div class="dep-num">5</div>
+            <div class="dep-content">
+              <div class="dep-title">Required for "Normal"</div>
+              <div class="dep-desc">The tool has become infrastructure. Absence produces noticeable dysfunction. The original upside is gone — you're using to maintain baseline.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HARM REDUCTION -->
+      <div class="section reveal" id="reduction">
+        <div class="section-label">Agency, Not Abstinence</div>
+        <h2>Harm Reduction Strategies</h2>
+        <p>These are not quitting strategies. They're control strategies. The goal is to keep nicotine in the "tool" column rather than letting it drift into "infrastructure."</p>
+        <div class="hr-grid">
+          <div class="hr-card">
+            <div class="hr-card-title">Use Windows</div>
+            <div class="hr-card-desc">Define specific tasks or time blocks where nicotine is permitted. Outside those windows, it's off the table. The structure matters more than the rule.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-title">Dose Caps</div>
+            <div class="hr-card-desc">Set a daily maximum and track it. If you're regularly hitting the cap, the cap needs to come down. If you can't come down, that's information.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-title">No Passive Consumption</div>
+            <div class="hr-card-desc">Every use should be a decision. Automatic use — out of habit, boredom, or routine — is the leading indicator of lost control.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-title">Avoid Stress Dosing</div>
+            <div class="hr-card-desc">Using nicotine to manage stress is the fastest route to the lower levels of the dependency curve. Track whether your use spikes under pressure.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-title">Scheduled Tolerance Breaks</div>
+            <div class="hr-card-desc">Regular breaks — even brief ones — reset receptor sensitivity and confirm optionality. If a planned break feels impossible, note that.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-title">Track, Don't Guess</div>
+            <div class="hr-card-desc">Most people underestimate daily use by 30–50%. A week of honest logging usually changes the conversation you're having with yourself.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEDGER -->
+      <div class="section reveal" id="ledger">
+        <div class="section-label">The Summary</div>
+        <h2>Ledger</h2>
+        <p>No verdict. Just the full picture — so you can make a real decision.</p>
+        <div class="ledger-grid">
+          <div class="ledger-col green-col">
+            <div class="ledger-header">✓ Worth It When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">Use is deliberate and defined</div>
+              <div class="ledger-item">Dose has been stable for months</div>
+              <div class="ledger-item">Sleep and mood remain unaffected</div>
+              <div class="ledger-item">You can skip it without anxiety</div>
+              <div class="ledger-item">It enhances performance — not enables it</div>
+            </div>
+          </div>
+          <div class="ledger-col red-col">
+            <div class="ledger-header">⚠ Risky When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">Use feels automatic, not chosen</div>
+              <div class="ledger-item">Dose or frequency is creeping up</div>
+              <div class="ledger-item">Needed to feel "normal" — not good</div>
+              <div class="ledger-item">Sleep quality has deteriorated</div>
+              <div class="ledger-item">You'd feel anxious skipping a day</div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-reassess ledger-col amber-col">
+          <div class="ledger-header">↺ Reassess When</div>
+          <div class="ledger-items">
+            <div class="ledger-item">Irritability without it is noticeable to others</div>
+            <div class="ledger-item">Frequency has increased without a deliberate choice to do so</div>
+            <div class="ledger-item">The financial cost has become something you avoid calculating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL CHECK -->
+      <div class="section reveal" id="check">
+        <div class="section-label">Quick Self-Assessment</div>
+        <h2>Control Check</h2>
+        <p>Five questions. Honest answers only. Check the ones that are currently true for you.</p>
+        <div class="control-check">
+          <div class="cc-header">Check all that apply</div>
+          <div class="cc-questions">
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I use nicotine only for predefined tasks or windows — not automatically.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My dose has not increased over the past 6–12 months.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I do not feel noticeably worse — cognitively or emotionally — without it.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My use is not tied to specific stress triggers or emotional states.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I could skip it tomorrow without anxiety or planning around it.</span>
+            </div>
+          </div>
+          <div class="cc-result" id="cc-result"></div>
+        </div>
+      </div>
+
+      <!-- SOVEREIGNTY -->
+      <div class="sovereignty reveal">
+        <h2>If you removed nicotine tomorrow, <em>what would actually break?</em></h2>
+        <p>If the answer is "very little," you're likely still in control. You're using a tool, and the tool is optional.</p>
+        <p>If the answer feels uncomfortable — if there's hesitation, rationalization, or a list of reasons why now isn't the right time — that's not a problem. That's simply information. And information is where clarity starts.</p>
+        <p>We're not asking you to quit. We're asking you to know.</p>
+        <div class="tagline">Everything has a cost. You choose which ones to pay.</div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sc-header">On This Page</div>
+        <div class="sc-body">
+          <a href="#what" class="sc-nav-link">What It Is</a>
+          <a href="#upside" class="sc-nav-link">The Upside</a>
+          <a href="#financial" class="sc-nav-link">Financial Cost</a>
+          <a href="#physical" class="sc-nav-link">Physical Cost</a>
+          <a href="#psychological" class="sc-nav-link">Psychological Cost</a>
+          <a href="#opportunity" class="sc-nav-link">Opportunity Cost</a>
+          <a href="#curve" class="sc-nav-link">Dependency Curve</a>
+          <a href="#reduction" class="sc-nav-link">Harm Reduction</a>
+          <a href="#ledger" class="sc-nav-link">Ledger</a>
+          <a href="#check" class="sc-nav-link">Control Check</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Quick Stats</div>
+        <div class="sc-body">
+          <div class="sc-stat">
+            <span class="sc-stat-label">Onset</span>
+            <span class="sc-stat-val">10–20 sec</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Peak effect</span>
+            <span class="sc-stat-val">~3–5 min</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Half-life</span>
+            <span class="sc-stat-val">~2 hours</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Tolerance onset</span>
+            <span class="sc-stat-val">Days–weeks</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Withdrawal peak</span>
+            <span class="sc-stat-val">24–72 hrs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Cost Layers</div>
+        <div class="sc-body">
+          <span class="sc-tag">Financial</span>
+          <span class="sc-tag">Physical</span>
+          <span class="sc-tag">Psychological</span>
+          <span class="sc-tag">Opportunity</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Other Vices</div>
+        <div class="sc-body">
+          <a href="#" class="sc-nav-link">☕ Caffeine</a>
+          <a href="#" class="sc-nav-link">🌿 THC / Cannabis</a>
+          <a href="#" class="sc-nav-link">🥃 Alcohol</a>
+          <a href="#" class="sc-nav-link">⚗️ Other Substances</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <script>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    // CALCULATOR
+    const equivs = [
+      { t: 600, l: 'a month of streaming subscriptions' },
+      { t: 1200, l: 'a quality mechanical keyboard' },
+      { t: 2000, l: 'a month of rent in many cities' },
+      { t: 3500, l: 'a used car down payment' },
+      { t: 6000, l: 'a cross-country trip' },
+      { t: 12000, l: 'a year of community college tuition' },
+      { t: Infinity, l: 'a number worth sitting with' }
+    ];
+
+    function getEquiv(n) {
+      return equivs.find(e => n < e.t)?.l || 'something significant';
+    }
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString();
+    }
+
+    function calcNic() {
+      const method = document.getElementById('n-method').value;
+      const spend = parseFloat(document.getElementById('n-spend').value);
+      if (!method || isNaN(spend) || spend <= 0) {
+        alert('Please select a method and enter a daily spend.');
+        return;
+      }
+      const annual = spend * 365;
+      const monthly = annual / 12;
+      const five = annual * 5;
+      document.getElementById('nr-mo').textContent = fmt(monthly);
+      document.getElementById('nr-yr').textContent = fmt(annual);
+      document.getElementById('nr-5').textContent = fmt(five);
+      document.getElementById('nr-eq').textContent = getEquiv(annual);
+      document.getElementById('n-result').classList.add('show');
+    }
+
+    // CONTROL CHECK
+    function toggleCheck(el) {
+      el.classList.toggle('checked');
+      updateCheckResult();
+    }
+
+    function updateCheckResult() {
+      const checks = document.querySelectorAll('.cc-check');
+      const count = [...checks].filter(c => c.classList.contains('checked')).length;
+      const result = document.getElementById('cc-result');
+      let msg = '';
+      if (count === 0) {
+        result.classList.remove('show');
+        return;
+      } else if (count >= 4) {
+        msg = `${count}/5 — Use appears intentional and controlled. The tool is likely still optional.`;
+      } else if (count === 3) {
+        msg = `${count}/5 — Some control indicators present, but gaps worth examining. Which two are you not checking?`;
+      } else if (count <= 2) {
+        msg = `${count}/5 — Fewer control indicators than expected. Worth an honest look at where on the dependency curve you are.`;
+      }
+      result.textContent = msg;
+      result.classList.add('show');
+    }
+  </script>
+
+</body>
+</html>
