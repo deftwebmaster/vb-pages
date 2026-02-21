@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ViceBudget — Harm Reduction Without the Guesswork</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- * lone wolf, own sky | Matt Livingston -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #f5f0e8;
+      --stone: #e8e0d0;
+      --sand: #d4c9b4;
+      --bark: #8c7355;
+      --cedar: #5c4a32;
+      --charcoal: #2a2420;
+      --text: #3a3028;
+      --text-light: #6b5f52;
+      --accent: #b85c38;
+      --accent-soft: #d4795a;
+      --green: #4a7c59;
+      --green-soft: #6a9e78;
+
+      --nicotine: #c4a882;
+      --caffeine: #8b6914;
+      --thc: #5a7a3a;
+      --alcohol: #8b3a3a;
+      --substances: #5a4a7a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NOISE TEXTURE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 247, 242, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--cedar);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-light);
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 2rem 5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(184, 92, 56, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(92, 74, 50, 0.06) 0%, transparent 60%),
+        var(--cream);
+      z-index: 0;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.1s;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+      font-weight: 600;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.25s;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-subhead {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .hero-intro {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: var(--text);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.55s;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-radius: 4px;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary:hover {
+      background: var(--cedar);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--cedar);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: 1.5px solid var(--sand);
+      border-radius: 4px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--bark);
+      color: var(--accent);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--sand);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: fadeIn 1s ease forwards 1.2s;
+      opacity: 0;
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--sand), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+
+    /* PHILOSOPHY STRIP */
+    .philosophy {
+      background: var(--charcoal);
+      color: var(--warm-white);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .philosophy p {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      font-style: italic;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.6;
+      opacity: 0.92;
+    }
+
+    .philosophy p span {
+      color: var(--accent-soft);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    /* VICES SECTION */
+    .section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section-intro {
+      color: var(--text-light);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin-bottom: 3rem;
+    }
+
+    /* VICE CARDS */
+    .vice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .vice-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .vice-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(42,36,32,0.08);
+    }
+
+    .vice-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .vice-card.nicotine::before { background: var(--nicotine); }
+    .vice-card.caffeine::before { background: var(--caffeine); }
+    .vice-card.thc::before { background: var(--thc); }
+    .vice-card.alcohol::before { background: var(--alcohol); }
+    .vice-card.substances::before { background: var(--substances); }
+
+    .vice-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .vice-name {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .vice-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .vice-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+      background: var(--warm-white);
+      color: var(--bark);
+      border: 1px solid var(--stone);
+    }
+
+    .vice-card-cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .vice-card-cta:hover { border-color: var(--accent); }
+
+    /* COST FRAMEWORK */
+    .framework {
+      background: var(--warm-white);
+      border-top: 1px solid var(--stone);
+      border-bottom: 1px solid var(--stone);
+      padding: 6rem 2rem;
+    }
+
+    .framework-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    .cost-item {
+      position: relative;
+    }
+
+    .cost-number {
+      font-family: 'Lora', serif;
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: var(--stone);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.04em;
+    }
+
+    .cost-title {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.6rem;
+    }
+
+    .cost-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* TOOL PREVIEW */
+    .tool-preview {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .tool-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 10px;
+      padding: 2.5rem;
+      max-width: 720px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tool-card::after {
+      content: 'Interactive Tool';
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: rgba(74,124,89,0.1);
+      padding: 0.25rem 0.7rem;
+      border-radius: 3px;
+    }
+
+    .tool-title {
+      font-family: 'Lora', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+
+    .tool-form {
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    .form-group select,
+    .form-group input {
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid var(--stone);
+      border-radius: 5px;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .form-group select:focus,
+    .form-group input:focus {
+      border-color: var(--bark);
+    }
+
+    .tool-result {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: var(--warm-white);
+      border-radius: 6px;
+      border: 1px solid var(--stone);
+      display: none;
+    }
+
+    .tool-result.visible { display: block; }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.9rem;
+    }
+
+    .result-row:last-child { border-bottom: none; }
+
+    .result-label { color: var(--text-light); }
+
+    .result-value {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+    }
+
+    .result-value.highlight { color: var(--accent); }
+
+    .btn-calculate {
+      padding: 0.8rem 2rem;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .btn-calculate:hover { background: #3d6b4a; }
+
+    /* CONTENT / ARTICLES */
+    .articles {
+      background: var(--warm-white);
+      border-top: 1px solid var(--stone);
+      padding: 6rem 2rem;
+    }
+
+    .articles-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .article-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .article-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(42,36,32,0.07);
+    }
+
+    .article-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .article-title {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+    }
+
+    .article-excerpt {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* MANIFESTO */
+    .manifesto {
+      padding: 6rem 2rem;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .manifesto blockquote {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.2rem, 2.8vw, 1.7rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--cedar);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .manifesto blockquote::before {
+      content: '"';
+      font-size: 6rem;
+      color: var(--stone);
+      position: absolute;
+      top: -2rem;
+      left: -1rem;
+      font-family: 'Lora', serif;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .manifesto cite {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--sand);
+      text-transform: uppercase;
+      font-style: normal;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--charcoal);
+      color: var(--sand);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    footer .footer-logo {
+      font-family: 'Lora', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--warm-white);
+      margin-bottom: 0.75rem;
+    }
+
+    footer .footer-logo span { color: var(--accent-soft); }
+
+    footer p {
+      font-size: 0.82rem;
+      color: var(--bark);
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    footer .footer-note {
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      color: #4a3f36;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.1); }
+    }
+
+    /* SCROLL ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .cost-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Vice<span>Budget</span></div>
+    <ul class="nav-links">
+      <li><a href="#vices">By Vice</a></li>
+      <li><a href="#calculator">Calculator</a></li>
+      <li><a href="#reads">Reading</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <span class="eyebrow">Harm Reduction · Financial Clarity · No Judgment</span>
+      <h1>Harm Reduction Without<br>the <em>Guesswork.</em><br>Know the Cost.<br>Keep What's Worth It.</h1>
+      <p class="hero-subhead">Everything Has a Cost. You Choose Which Ones to Pay.</p>
+      <p class="hero-intro">We quantify the financial, psychological, and opportunity trade-offs of your vices — so you can decide with clarity.</p>
+      <div class="hero-ctas">
+        <a href="#calculator" class="btn-primary">Try the Calculator</a>
+        <a href="#vices" class="btn-secondary">Explore Vices</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <div class="philosophy">
+    <p>We're not here to make you quit. We're here to make sure you <span>chose</span> — not just defaulted.</p>
+  </div>
+
+  <!-- VICES -->
+  <section id="vices" class="section">
+    <div class="section-label">By Vice</div>
+    <h2 class="section-title">Pick Your Lens</h2>
+    <p class="section-intro">Each vice has its own cost structure. Select yours to see what's really on the table.</p>
+    <div class="vice-grid">
+
+      <div class="vice-card nicotine reveal">
+        <span class="vice-icon">🚬</span>
+        <div class="vice-name">Nicotine</div>
+        <p class="vice-desc">Cigarettes, vaping, pouches, dip. One of the most expensive habits per dollar of effect — and one of the hardest to see clearly from inside it.</p>
+        <div class="vice-tags">
+          <span class="tag">Financial</span>
+          <span class="tag">Dependency</span>
+          <span class="tag">Health</span>
+        </div>
+        <a href="#" class="vice-card-cta">View breakdown →</a>
+      </div>
+
+      <div class="vice-card caffeine reveal">
+        <span class="vice-icon">☕</span>
+        <div class="vice-name">Caffeine</div>
+        <p class="vice-desc">The socially acceptable one. Coffee, energy drinks, pre-workout. The costs are subtle — sleep debt, dependency, anxiety — but they compound.</p>
+        <div class="vice-tags">
+          <span class="tag">Financial</span>
+          <span class="tag">Sleep</span>
+          <span class="tag">Anxiety</span>
+        </div>
+        <a href="#" class="vice-card-cta">View breakdown →</a>
+      </div>
+
+      <div class="vice-card thc reveal">
+        <span class="vice-icon">🌿</span>
+        <div class="vice-name">THC / Cannabis</div>
+        <p class="vice-desc">Legal in many places. Normalized almost everywhere. Still has real costs: motivation, memory, and money — especially at daily use.</p>
+        <div class="vice-tags">
+          <span class="tag">Financial</span>
+          <span class="tag">Motivation</span>
+          <span class="tag">Cognition</span>
+        </div>
+        <a href="#" class="vice-card-cta">View breakdown →</a>
+      </div>
+
+      <div class="vice-card alcohol reveal">
+        <span class="vice-icon">🥃</span>
+        <div class="vice-name">Alcohol</div>
+        <p class="vice-desc">The most culturally embedded vice on this list. The costs are wide: financial, relational, physiological, professional — and easy to rationalize.</p>
+        <div class="vice-tags">
+          <span class="tag">Financial</span>
+          <span class="tag">Health</span>
+          <span class="tag">Relationships</span>
+        </div>
+        <a href="#" class="vice-card-cta">View breakdown →</a>
+      </div>
+
+      <div class="vice-card substances reveal">
+        <span class="vice-icon">⚗️</span>
+        <div class="vice-name">Other Substances</div>
+        <p class="vice-desc">We don't moralize. We calculate. Whether recreational or habitual, these carry some of the highest opportunity costs in the table.</p>
+        <div class="vice-tags">
+          <span class="tag">Financial</span>
+          <span class="tag">Opportunity</span>
+          <span class="tag">Risk</span>
+        </div>
+        <a href="#" class="vice-card-cta">View breakdown →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FRAMEWORK -->
+  <div class="framework" id="framework">
+    <div class="framework-inner">
+      <div class="section-label reveal">The Framework</div>
+      <h2 class="section-title reveal">Three Costs Every Vice Carries</h2>
+      <p class="section-intro reveal">Every calculator and every article on this site runs through the same three lenses. Because the full price is never just the price tag.</p>
+      <div class="cost-grid">
+        <div class="cost-item reveal">
+          <div class="cost-number">01</div>
+          <div class="cost-title">Financial</div>
+          <p class="cost-desc">The cash leaving your account. Daily spend, annualized cost, and what that money could be doing instead.</p>
+        </div>
+        <div class="cost-item reveal">
+          <div class="cost-number">02</div>
+          <div class="cost-title">Psychological</div>
+          <p class="cost-desc">Dependency patterns, mood effects, cognitive load, anxiety, and the mental energy required to maintain the habit.</p>
+        </div>
+        <div class="cost-item reveal">
+          <div class="cost-number">03</div>
+          <div class="cost-title">Opportunity</div>
+          <p class="cost-desc">Time, energy, and capital redirected away from things you actually want. The invisible cost most people never calculate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <section id="calculator" class="tool-preview">
+    <div class="section-label reveal">Tool</div>
+    <h2 class="section-title reveal">Run Your Numbers</h2>
+    <p class="section-intro reveal" style="margin-bottom: 2rem;">No signup. No judgment. Just clarity.</p>
+    <div class="tool-card reveal">
+      <h3 class="tool-title">Vice Cost Calculator</h3>
+      <p class="tool-subtitle">See the real annual cost — and where that money could go instead.</p>
+      <div class="tool-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Vice</label>
+            <select id="vice-select">
+              <option value="">Select one…</option>
+              <option value="cigarettes">Cigarettes</option>
+              <option value="vaping">Vaping</option>
+              <option value="coffee">Coffee / Espresso</option>
+              <option value="energy">Energy Drinks</option>
+              <option value="cannabis">Cannabis</option>
+              <option value="alcohol">Alcohol</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>How Often?</label>
+            <select id="frequency">
+              <option value="daily">Daily</option>
+              <option value="5x">5x per week</option>
+              <option value="3x">3x per week</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Estimated spend per session ($)</label>
+          <input type="number" id="spend" placeholder="e.g. 12" min="0" />
+        </div>
+        <button class="btn-calculate" onclick="calculate()">Calculate My Cost →</button>
+      </div>
+      <div class="tool-result" id="result">
+        <div class="result-row">
+          <span class="result-label">Monthly cost</span>
+          <span class="result-value" id="r-monthly">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Annual cost</span>
+          <span class="result-value highlight" id="r-annual">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">5-year projection</span>
+          <span class="result-value" id="r-5yr">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">That's roughly…</span>
+          <span class="result-value" id="r-equiv">—</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTICLES -->
+  <section id="reads" class="articles">
+    <div class="articles-inner">
+      <div class="section-label reveal">Reading</div>
+      <h2 class="section-title reveal">Think, Don't Just Feel</h2>
+      <p class="section-intro reveal">Essays and frameworks for people who want to understand their habits — not just quit them.</p>
+      <div class="article-grid">
+
+        <a href="#" class="article-card reveal">
+          <span class="article-tag">Caffeine</span>
+          <div class="article-title">The Hidden Tax on Your Morning Routine</div>
+          <p class="article-excerpt">Coffee feels cheap until you add it up. Then add the sleep debt. Then add the anxiety. Here's what the full invoice looks like.</p>
+        </a>
+
+        <a href="#" class="article-card reveal">
+          <span class="article-tag">Cannabis · Motivation</span>
+          <div class="article-title">What Daily THC Use Actually Costs Your Ambition</div>
+          <p class="article-excerpt">Not a scare piece. A real look at the research on motivation, working memory, and what "functional use" means in practice.</p>
+        </a>
+
+        <a href="#" class="article-card reveal">
+          <span class="article-tag">Framework</span>
+          <div class="article-title">Harm Reduction Isn't Quitting. That's the Point.</div>
+          <p class="article-excerpt">The binary of "using" vs. "clean" misses the point. Clarity about cost is what actually changes behavior — not shame.</p>
+        </a>
+
+        <a href="#" class="article-card reveal">
+          <span class="article-tag">Nicotine</span>
+          <div class="article-title">The Opportunity Cost of Nicotine, Quantified</div>
+          <p class="article-excerpt">Beyond the health stats you've already tuned out — what does a pack-a-day habit actually cost you in capital and time over a decade?</p>
+        </a>
+
+        <a href="#" class="article-card reveal">
+          <span class="article-tag">Alcohol</span>
+          <div class="article-title">Drinking and the Invisible Recovery Day</div>
+          <p class="article-excerpt">The financial cost of alcohol is obvious. The 18–36 hours of reduced cognitive output after drinking? That never shows up on the receipt.</p>
+        </a>
+
+        <a href="#" class="article-card reveal">
+          <span class="article-tag">Psychology</span>
+          <div class="article-title">Why We Underestimate Recurring Costs</div>
+          <p class="article-excerpt">$8 a day doesn't feel like $2,920 a year. Our brains aren't built for this math. Here's how to actually see it.</p>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto">
+    <blockquote class="reveal">We're not anti-vice. We're anti-default. The difference is whether you chose it or just never questioned it.</blockquote>
+    <cite class="reveal">— The ViceBudget principle</cite>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Vice<span>Budget</span></div>
+    <p>Harm reduction without the guesswork. Financial clarity for the habits you're keeping — and the ones you're not.</p>
+    <p class="footer-note">© 2026 ViceBudget. Not medical advice. Not financial advice. Just math and honesty.</p>
+  </footer>
+
+  <script>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.style.transitionDelay = `${i % 4 * 0.08}s`;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // CALCULATOR
+    const freqMultipliers = { daily: 365, '5x': 260, '3x': 156, weekly: 52 };
+
+    const equivalents = [
+      { threshold: 500, label: 'a round-trip flight' },
+      { threshold: 1000, label: 'a month of groceries' },
+      { threshold: 2000, label: 'a quality laptop' },
+      { threshold: 3000, label: 'a used car payment for a year' },
+      { threshold: 5000, label: 'a European vacation' },
+      { threshold: 10000, label: 'a year of community college' },
+      { threshold: Infinity, label: 'something worth pausing on' },
+    ];
+
+    function getEquivalent(amount) {
+      for (const e of equivalents) {
+        if (amount < e.threshold) return e.label;
+      }
+      return 'something significant';
+    }
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString();
+    }
+
+    function calculate() {
+      const vice = document.getElementById('vice-select').value;
+      const freq = document.getElementById('frequency').value;
+      const spend = parseFloat(document.getElementById('spend').value);
+
+      if (!vice || !freq || isNaN(spend) || spend <= 0) {
+        document.getElementById('result').classList.remove('visible');
+        alert('Please fill in all fields with a valid spend amount.');
+        return;
+      }
+
+      const sessionsPerYear = freqMultipliers[freq];
+      const annual = spend * sessionsPerYear;
+      const monthly = annual / 12;
+      const fiveYr = annual * 5;
+
+      document.getElementById('r-monthly').textContent = fmt(monthly);
+      document.getElementById('r-annual').textContent = fmt(annual);
+      document.getElementById('r-5yr').textContent = fmt(fiveYr);
+      document.getElementById('r-equiv').textContent = getEquivalent(annual);
+
+      const result = document.getElementById('result');
+      result.classList.add('visible');
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+
+</body>
+</html>
