@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Other Substances — ViceBudget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- * lone wolf, open range | Matt Livingston -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #f5f0e8;
+      --stone: #e8e0d0;
+      --sand: #d4c9b4;
+      --bark: #8c7355;
+      --cedar: #5c4a32;
+      --charcoal: #2a2420;
+      --text: #3a3028;
+      --text-light: #6b5f52;
+      --accent: #b85c38;
+
+      /* Substances palette — deep slate / indigo */
+      --sub: #4a4a7a;
+      --sub-dark: #2e2e58;
+      --sub-mid: #7a7aaa;
+      --sub-light: #eeeef8;
+      --sub-border: #b0b0d8;
+
+      --green: #4a7c59;
+      --amber: #8b6914;
+      --red-soft: #9e4a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 247, 242, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cedar);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem 2rem 5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .vice-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--sub-light);
+      border: 1px solid var(--sub-border);
+      color: var(--sub-dark);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .hero-thesis {
+      font-family: 'Lora', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 660px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .hero-intro {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 660px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    /* LAYOUT */
+    .page-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .main-col { min-width: 0; }
+    .sidebar { position: sticky; top: 6rem; }
+
+    /* SECTIONS */
+    .section {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--stone);
+    }
+
+    .section:first-child { border-top: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sub-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .section h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .key-line {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--sub-dark);
+      border-left: 3px solid var(--sub-border);
+      padding: 0.75rem 1.2rem;
+      background: var(--sub-light);
+      border-radius: 0 5px 5px 0;
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    /* WHY PEOPLE DON'T — three reason cards */
+    .reason-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .reason-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reason-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--sub-mid);
+    }
+
+    .reason-title {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.6rem;
+    }
+
+    .reason-desc {
+      font-size: 0.84rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* COST FRAMEWORK — three layers */
+    .cost-layers {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .cost-layer {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cl-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .cl-num {
+      font-family: 'Lora', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--stone);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      flex-shrink: 0;
+    }
+
+    .cl-title {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+
+    .cl-body {
+      padding: 1.2rem 1.5rem;
+    }
+
+    .cl-body p {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+
+    .cl-body p:last-child { margin-bottom: 0; }
+
+    .cl-questions {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .cl-q {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.55;
+      padding: 0.6rem 0.8rem;
+      background: var(--sub-light);
+      border-radius: 4px;
+      border: 1px solid var(--sub-border);
+    }
+
+    .cl-q-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sub-dark);
+      flex-shrink: 0;
+      min-width: 80px;
+    }
+
+    /* UPSIDE SECTION */
+    .upside-box {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+
+    .upside-box p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .upside-box p:last-child { margin-bottom: 0; }
+
+    .upside-prompt {
+      margin-top: 1.2rem;
+      padding: 1rem 1.2rem;
+      background: var(--warm-white);
+      border-radius: 5px;
+      border: 1px solid var(--stone);
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--cedar);
+      line-height: 1.6;
+    }
+
+    /* EIGHT QUESTIONS */
+    .ledger-questions {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .lq-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+
+    .lq-num {
+      font-family: 'Lora', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--sub-border);
+      line-height: 1;
+      flex-shrink: 0;
+      min-width: 2rem;
+      letter-spacing: -0.03em;
+    }
+
+    .lq-content {}
+
+    .lq-question {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+      line-height: 1.4;
+    }
+
+    .lq-why {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+
+    /* OPTIONALITY TEST */
+    .optionality-box {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .opt-header {
+      padding: 1rem 1.5rem;
+      background: var(--sub-light);
+      border-bottom: 1px solid var(--sub-border);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .opt-icon {
+      font-size: 1.4rem;
+    }
+
+    .opt-title {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--sub-dark);
+    }
+
+    .opt-body {
+      padding: 1.5rem;
+    }
+
+    .opt-body p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .opt-scale {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+
+    .opt-scale-item {
+      text-align: center;
+      padding: 1rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--stone);
+    }
+
+    .opt-scale-item.s1 { background: #e8f5ee; border-color: #a8d8b8; }
+    .opt-scale-item.s2 { background: #f5f0e0; border-color: #d8c880; }
+    .opt-scale-item.s3 { background: #f5e6e4; border-color: #d8a8a0; }
+
+    .opt-scale-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .opt-scale-item.s1 .opt-scale-label { color: #3a6b4c; }
+    .opt-scale-item.s2 .opt-scale-label { color: #7a5a20; }
+    .opt-scale-item.s3 .opt-scale-label { color: #8a3a30; }
+
+    .opt-scale-desc {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--text-light);
+    }
+
+    /* SELF LEDGER TEMPLATE */
+    .self-ledger {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .sl-header {
+      padding: 1rem 1.5rem;
+      background: var(--charcoal);
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .sl-title {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--warm-white);
+    }
+
+    .sl-subtitle {
+      font-size: 0.78rem;
+      color: #8a7a6a;
+    }
+
+    .sl-sections {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .sl-section {
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .sl-section-header {
+      padding: 0.6rem 1rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .sl-section-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .sl-prompt {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .sl-prompt-label {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    .sl-prompt-field {
+      padding: 0.6rem 0.8rem;
+      background: var(--cream);
+      border: 1.5px solid var(--stone);
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+      min-height: 40px;
+    }
+
+    .sl-prompt-field:focus { border-color: var(--sub-mid); }
+
+    .sl-prompt-field::placeholder { color: var(--sand); }
+
+    .sl-note {
+      padding: 0.75rem 1rem;
+      background: var(--sub-light);
+      border-top: 1px solid var(--sub-border);
+      font-size: 0.78rem;
+      color: var(--sub-dark);
+      line-height: 1.5;
+    }
+
+    /* WHEN THE FRAMEWORK HITS A WALL */
+    .wall-box {
+      margin-top: 1.5rem;
+      background: var(--warm-white);
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 2rem;
+    }
+
+    .wall-box p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .wall-box p:last-child { margin-bottom: 0; }
+
+    .wall-outcomes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin: 1.2rem 0;
+    }
+
+    .wall-outcome {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      padding: 0.9rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.6rem;
+      align-items: baseline;
+    }
+
+    .wall-outcome::before {
+      content: '→';
+      color: var(--sub-mid);
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    /* HR PRINCIPLES */
+    .hr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .hr-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .hr-card-num {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--sub-border);
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .hr-card-content {}
+
+    .hr-card-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 0.25rem;
+    }
+
+    .hr-card-desc {
+      font-size: 0.81rem;
+      color: var(--text-light);
+      line-height: 1.55;
+    }
+
+    /* SUBSTANCE SNAPSHOTS */
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .snapshot-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .snapshot-header {
+      padding: 0.85rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .snapshot-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+    .snapshot-name {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      flex: 1;
+    }
+
+    .snapshot-tag {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      border: 1px solid;
+      flex-shrink: 0;
+    }
+
+    .tag-financial   { background: #fdf0e8; border-color: #e0b890; color: #7a4a20; }
+    .tag-physical    { background: #f5e6e4; border-color: #d4a0a0; color: #7a2828; }
+    .tag-psych       { background: #eeeef8; border-color: var(--sub-border); color: var(--sub-dark); }
+    .tag-opportunity { background: #f0f5e8; border-color: #a8c890; color: #3a5a20; }
+    .tag-mixed       { background: var(--warm-white); border-color: var(--sand); color: var(--bark); }
+
+    .snapshot-body {
+      padding: 1rem 1.2rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .snapshot-ledger-note {
+      margin-top: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      background: var(--warm-white);
+      border-radius: 4px;
+      border-left: 2px solid var(--sub-border);
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.55;
+      font-style: italic;
+    }
+
+    /* SOVEREIGNTY */
+    .sovereignty {
+      background: var(--charcoal);
+      color: var(--warm-white);
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sovereignty::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(122, 122, 170, 0.07);
+    }
+
+    .sovereignty::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(122, 122, 170, 0.05);
+    }
+
+    .sovereignty h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      color: var(--warm-white);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty h2 em { color: var(--sub-mid); font-style: italic; }
+
+    .sovereignty p {
+      font-size: 0.95rem;
+      color: #a89880;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty .tagline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--sub-mid);
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .safety-net {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #3a3028;
+      position: relative;
+      z-index: 1;
+    }
+
+    .safety-net p {
+      font-size: 0.8rem;
+      color: #6a5a50;
+      line-height: 1.65;
+      max-width: 520px;
+    }
+
+    .safety-net a {
+      color: #8a7a70;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .safety-net a:hover { color: var(--sub-mid); }
+
+    /* SIDEBAR */
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .sc-header {
+      padding: 0.75rem 1.2rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .sc-body { padding: 1rem 1.2rem; }
+
+    .sc-nav-link {
+      display: block;
+      padding: 0.45rem 0;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--stone);
+      transition: color 0.2s;
+    }
+
+    .sc-nav-link:last-child { border-bottom: none; }
+    .sc-nav-link:hover { color: var(--accent); }
+
+    .sc-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--sub-light);
+      color: var(--sub-dark);
+      border: 1px solid var(--sub-border);
+      margin: 0.2rem 0.2rem 0 0;
+    }
+
+    .sc-expand-item {
+      padding: 0.45rem 0;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      border-bottom: 1px solid var(--stone);
+      line-height: 1.4;
+    }
+
+    .sc-expand-item:last-child { border-bottom: none; }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 800px) {
+      .page-body { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .reason-grid,
+      .hr-grid,
+      .wall-outcomes,
+      .opt-scale { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/index.html" class="nav-logo">Vice<span>Budget</span></a>
+    <a href="/index.html" class="nav-back">← All Vices</a>
+  </nav>
+
+  <div class="hero">
+    <div class="vice-pill">⚗️ Other Substances</div>
+    <h1>We Covered Four. You Might Be Using Something Else.</h1>
+    <p class="hero-thesis">The framework doesn't change. The substance does.</p>
+    <p class="hero-intro">ViceBudget covers nicotine, caffeine, THC, and alcohol specifically — because they're the most common, the most normalized, and the most data-rich. That's four. You might be using something else. But the three-cost framework underneath every page on this site applies to anything you're putting in your body with regularity. This page gives you the template. What you do with it is yours.</p>
+  </div>
+
+  <div class="page-body">
+    <div class="main-col">
+
+      <!-- WHY PEOPLE DON'T -->
+      <div class="section reveal" id="why">
+        <div class="section-label">The Starting Point</div>
+        <h2>Why Most People Never Build a Ledger</h2>
+        <p>It's not avoidance, exactly. It's that nobody asks them to. The absence of examination isn't weakness — it's how defaults work. Three patterns keep the ledger from getting built:</p>
+        <div class="reason-grid">
+          <div class="reason-card">
+            <div class="reason-title">The Normalization Buffer</div>
+            <div class="reason-desc">If enough people around you use it, it doesn't register as a choice requiring examination. Prevalence substitutes for evaluation. The more normal it is, the more invisible the cost structure becomes.</div>
+          </div>
+          <div class="reason-card">
+            <div class="reason-title">The Function Justification</div>
+            <div class="reason-desc">"I use it for sleep / pain / anxiety / focus" frames the habit as a medical decision rather than a personal one worth auditing. Functional use is real — and it still has a ledger.</div>
+          </div>
+          <div class="reason-card">
+            <div class="reason-title">The Cost Invisibility</div>
+            <div class="reason-desc">The three cost layers — financial, psychological, opportunity — are each easy to minimize individually. It's the combined ledger that lands differently. Nobody ever adds all three up at once.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- THREE COST FRAMEWORK -->
+      <div class="section reveal" id="framework">
+        <div class="section-label">The Template</div>
+        <h2>The Three-Cost Framework</h2>
+        <p>Every page on ViceBudget runs the same analysis. Here it is as a thinking tool — applicable to any substance, any habit, any frequency of use.</p>
+        <div class="cost-layers">
+
+          <div class="cost-layer">
+            <div class="cl-header">
+              <div class="cl-num">01</div>
+              <div class="cl-title">Financial Cost</div>
+            </div>
+            <div class="cl-body">
+              <p>The most visible cost — and the most consistently underestimated at scale. Unit cost × frequency produces a weekly number that feels manageable. Weekly × 52 produces an annual number that usually doesn't. Annual × 5 produces a five-year number that changes the conversation.</p>
+              <p>The financial question isn't "can I afford this?" Most people can, technically. The question is: what is this capital not doing? That's the opportunity cost embedded in the financial layer — and it's the one that almost never gets asked.</p>
+              <div class="cl-questions">
+                <div class="cl-q"><span class="cl-q-label">Calculate</span> Unit cost × weekly frequency = weekly spend</div>
+                <div class="cl-q"><span class="cl-q-label">Annualize</span> Weekly spend × 52 = annual cost</div>
+                <div class="cl-q"><span class="cl-q-label">Project</span> Annual cost × 5 = five-year projection</div>
+                <div class="cl-q"><span class="cl-q-label">Compare</span> Five-year projection ÷ something you actually want = the real question</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cost-layer">
+            <div class="cl-header">
+              <div class="cl-num">02</div>
+              <div class="cl-title">Psychological Cost</div>
+            </div>
+            <div class="cl-body">
+              <p>The hardest layer to see clearly — because you're measuring from inside the habit, not outside it. Four questions cut through the noise:</p>
+              <div class="cl-questions">
+                <div class="cl-q"><span class="cl-q-label">Dependency</span> Does your baseline mood, focus, or function require this — or is it genuinely additive above a stable baseline?</div>
+                <div class="cl-q"><span class="cl-q-label">Regulation</span> Are you using this to feel something — or to stop feeling something? Both are valid; only one of them is worth examining more carefully.</div>
+                <div class="cl-q"><span class="cl-q-label">Loop</span> Is there a pattern — trigger → use → relief → trigger — running without your deliberate input? How long has it been running?</div>
+                <div class="cl-q"><span class="cl-q-label">Identity</span> Has this become part of how you describe yourself or your routine in a way that makes examination feel like a threat?</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cost-layer">
+            <div class="cl-header">
+              <div class="cl-num">03</div>
+              <div class="cl-title">Opportunity Cost</div>
+            </div>
+            <div class="cl-body">
+              <p>The most invisible layer. The question isn't what you lost directly — it's what you stopped reaching for. Opportunity cost lives in the gap between who you are and who you'd be without the habit in the picture.</p>
+              <div class="cl-questions">
+                <div class="cl-q"><span class="cl-q-label">Decisions</span> What choices get made differently because of this — in the moment, or in the hours after?</div>
+                <div class="cl-q"><span class="cl-q-label">Mornings</span> How many days per week start at a deficit rather than neutral? What does that compound to in a year?</div>
+                <div class="cl-q"><span class="cl-q-label">Avoidance</span> What discomfort is being deferred rather than processed? What is waiting on the other side of that deferral?</div>
+                <div class="cl-q"><span class="cl-q-label">Becoming</span> What version of you exists on the other side of this habit — and how long has it been since you checked in on them?</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- UPSIDE -->
+      <div class="section reveal" id="upside">
+        <div class="section-label">Before the Costs</div>
+        <h2>Name the Upside First</h2>
+        <p>No substance gets used consistently without providing something real. The upside of whatever you're using is legitimate — and it belongs in the ledger before the costs do. A ledger that ignores the asset column is dishonest and useless.</p>
+        <div class="upside-box">
+          <p>Before you run the three-cost framework, write down what you're actually getting. Not the rationalization you'd offer to someone who disapproved. The real thing.</p>
+          <p>Relief from something specific. A feeling that's otherwise hard to access. A social function that matters. A physical effect that makes a real difference in your day. Creative access. Sleep. Pain management. The particular quality of an evening that would otherwise be flat.</p>
+          <p>Name it honestly. Then run the costs against it. That's what a real ledger looks like — not a prosecution, not a defense. A full accounting.</p>
+          <div class="upside-prompt">Before you continue: what are you actually getting from this — in your own words, with nobody watching?</div>
+        </div>
+      </div>
+
+      <!-- EIGHT QUESTIONS -->
+      <div class="section reveal" id="questions">
+        <div class="section-label">The Worked Example</div>
+        <h2>Running the Framework</h2>
+        <p>Eight questions. Applied in sequence to whatever you're using. You don't need to answer them here — you need to answer them honestly, somewhere, at least once.</p>
+        <div class="ledger-questions">
+
+          <div class="lq-card">
+            <div class="lq-num">1</div>
+            <div class="lq-content">
+              <div class="lq-question">What does a week of use cost in dollars?</div>
+              <div class="lq-why">Not an estimate — an actual number. Unit cost × sessions per week. Most people haven't done this math.</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">2</div>
+            <div class="lq-content">
+              <div class="lq-question">What does a year cost? Five years?</div>
+              <div class="lq-why">Weekly × 52. Annual × 5. Write it out. The number usually looks different on paper than it does as a daily habit.</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">3</div>
+            <div class="lq-content">
+              <div class="lq-question">What are you specifically getting from it?</div>
+              <div class="lq-why">The honest answer — not the socially acceptable one. This goes in the asset column. It belongs there.</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">4</div>
+            <div class="lq-content">
+              <div class="lq-question">Is what you're getting harder or easier to access than it was a year ago?</div>
+              <div class="lq-why">This is the tolerance question. If the same dose produces less — or if dose has increased to maintain the same effect — the ledger is changing without you deciding it should.</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">5</div>
+            <div class="lq-content">
+              <div class="lq-question">What would your week look like without it?</div>
+              <div class="lq-why">Not forever — just a week. What changes? What's harder? What's easier? What do you notice that you've stopped noticing?</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">6</div>
+            <div class="lq-content">
+              <div class="lq-question">What emotions or situations reliably precede use?</div>
+              <div class="lq-why">Stress, boredom, social anxiety, pain, loneliness, celebration, routine. The trigger pattern tells you what function the substance is actually serving.</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">7</div>
+            <div class="lq-content">
+              <div class="lq-question">Could you take two weeks off right now — not white-knuckling it, genuinely off — without anxiety or significant planning?</div>
+              <div class="lq-why">This is the optionality test. The answer is a direct read on dependency depth. More on this below.</div>
+            </div>
+          </div>
+
+          <div class="lq-card">
+            <div class="lq-num">8</div>
+            <div class="lq-content">
+              <div class="lq-question">What is this not letting you do, feel, or become?</div>
+              <div class="lq-why">The opportunity cost question. The honest answer usually arrives slowly. Give it time. It's the most important question on the list.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- OPTIONALITY TEST -->
+      <div class="section reveal" id="optionality">
+        <div class="section-label">The Single Best Signal</div>
+        <h2>The Optionality Test</h2>
+        <p>Of all the questions in the framework, one tells you the most with the least noise: can you take two weeks off — not white-knuckling, not counting days, just genuinely not using — without it feeling like a significant decision?</p>
+        <div class="optionality-box">
+          <div class="opt-header">
+            <div class="opt-icon">⚖️</div>
+            <div class="opt-title">Two Weeks. Genuine Optionality. What does that feel like?</div>
+          </div>
+          <div class="opt-body">
+            <p>The answer tells you more about your relationship with a substance than any amount of self-assessment. Not two weeks of white-knuckling through withdrawal. Two weeks where the substance was simply not present and you didn't miss it in a way that felt meaningful.</p>
+            <div class="opt-scale">
+              <div class="opt-scale-item s1">
+                <div class="opt-scale-label">Feels like nothing</div>
+                <div class="opt-scale-desc">Use is likely optional. The tool is still a tool.</div>
+              </div>
+              <div class="opt-scale-item s2">
+                <div class="opt-scale-label">Feels like something</div>
+                <div class="opt-scale-desc">Worth examining. Dependency is building or present.</div>
+              </div>
+              <div class="opt-scale-item s3">
+                <div class="opt-scale-label">Feels impossible</div>
+                <div class="opt-scale-desc">The framework is working. It found what it was looking for.</div>
+              </div>
+            </div>
+            <p style="margin-top: 1rem;">If the test produces reasons why now isn't the right time — that response is itself information. It's not a verdict. Signals are what ledgers are for.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SELF LEDGER TEMPLATE -->
+      <div class="section reveal" id="template">
+        <div class="section-label">Your Ledger</div>
+        <h2>Build It Here</h2>
+        <p>Private, local, yours. Nothing is collected or stored. The point is the questions — not the answers you give us, but the ones you give yourself.</p>
+        <div class="self-ledger">
+          <div class="sl-header">
+            <div class="sl-title">Self-Ledger Template</div>
+            <div class="sl-subtitle">— no data collected, entirely private</div>
+          </div>
+          <div class="sl-sections">
+
+            <div class="sl-section">
+              <div class="sl-section-header">The Upside — name it honestly</div>
+              <div class="sl-section-body">
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">What are you actually getting from this? (Not the justification — the real thing.)</div>
+                  <textarea class="sl-prompt-field" placeholder="Write it out…" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="sl-section">
+              <div class="sl-section-header">Financial Layer</div>
+              <div class="sl-section-body">
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">Weekly spend ($)</div>
+                  <input type="number" class="sl-prompt-field" placeholder="e.g. 40" id="sl-weekly" oninput="updateLedger()" />
+                </div>
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">Annual cost (auto-calculated)</div>
+                  <input type="text" class="sl-prompt-field" placeholder="Enter weekly spend above" id="sl-annual" readonly style="cursor:default; background: var(--warm-white);" />
+                </div>
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">5-year projection (auto-calculated)</div>
+                  <input type="text" class="sl-prompt-field" placeholder="Enter weekly spend above" id="sl-5yr" readonly style="cursor:default; background: var(--warm-white);" />
+                </div>
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">What could that 5-year number do instead?</div>
+                  <textarea class="sl-prompt-field" placeholder="A trip, a course, a down payment, an emergency fund…" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="sl-section">
+              <div class="sl-section-header">Psychological Layer</div>
+              <div class="sl-section-body">
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">What triggers use most reliably? (stress, boredom, pain, routine, social pressure…)</div>
+                  <textarea class="sl-prompt-field" placeholder="Be specific…" rows="2"></textarea>
+                </div>
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">Are you using to feel something — or to stop feeling something?</div>
+                  <textarea class="sl-prompt-field" placeholder="Honest answer…" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="sl-section">
+              <div class="sl-section-header">Opportunity Layer</div>
+              <div class="sl-section-body">
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">What is this not letting you do, feel, or become?</div>
+                  <textarea class="sl-prompt-field" placeholder="Take your time with this one…" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="sl-section">
+              <div class="sl-section-header">The Optionality Test</div>
+              <div class="sl-section-body">
+                <div class="sl-prompt">
+                  <div class="sl-prompt-label">Two weeks off — what's your honest reaction to that idea?</div>
+                  <textarea class="sl-prompt-field" placeholder="Notice the reaction before you answer…" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="sl-note">This template lives only in your browser. Nothing is sent anywhere. Close the tab and it's gone — which is exactly the point. The ledger is for you.</div>
+        </div>
+      </div>
+
+      <!-- WHEN THE FRAMEWORK HITS A WALL -->
+      <div class="section reveal" id="wall">
+        <div class="section-label">The Framework, Honestly</div>
+        <h2>When the Ledger Comes Back Heavy</h2>
+        <p>The framework applies everywhere. And sometimes what it tells you is that you're carrying more than you've acknowledged — that the cost across all three layers is higher than the number you've been using to make peace with the habit.</p>
+        <div class="wall-box">
+          <p>That's not a failure of the framework. It's the framework working correctly. Clarity was the goal. You got it.</p>
+          <p>What you do with that clarity is yours. There's no single right response to an honest ledger:</p>
+          <div class="wall-outcomes">
+            <div class="wall-outcome">Adjust the habit — use less, use differently, use more intentionally</div>
+            <div class="wall-outcome">Quit — because the ledger came back clearly not worth it</div>
+            <div class="wall-outcome">Choose it deliberately — with the full cost acknowledged and accepted</div>
+            <div class="wall-outcome">Realize you need more support than a framework provides</div>
+          </div>
+          <p>All of those are valid responses to honest information. The only response that doesn't serve you is the one where you close this tab, go back to the default, and wait for a better time to look.</p>
+          <p>There isn't a better time. There's just now, and the habit, and the ledger you've either built or haven't.</p>
+        </div>
+      </div>
+
+      <!-- HARM REDUCTION PRINCIPLES -->
+      <div class="section reveal" id="principles">
+        <div class="section-label">Universal Principles</div>
+        <h2>Harm Reduction — Regardless of Substance</h2>
+        <p>Eight principles that apply across the board. Not rules. Tools.</p>
+        <div class="hr-grid">
+          <div class="hr-card">
+            <div class="hr-card-num">1</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Know your dose</div>
+              <div class="hr-card-desc">Most people don't. Estimating is not the same as knowing. The gap between the two is where tolerance hides.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">2</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Know your frequency</div>
+              <div class="hr-card-desc">Most people underestimate by 30–50%. Track for one week. The number is usually different than the one you've been using.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">3</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Know your trigger</div>
+              <div class="hr-card-desc">Stress, boredom, pain, social pressure, routine. The trigger pattern tells you what problem the substance is actually solving — and whether there's a better solution.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">4</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Set windows, not rules</div>
+              <div class="hr-card-desc">Rules get broken and produce shame. Windows get respected and produce data. "Only after 6pm" is a window. "I won't do this anymore" is a rule waiting to fail.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">5</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Track tolerance actively</div>
+              <div class="hr-card-desc">If you need more to get the same effect, the ledger is changing without your input. Tolerance is a signal, not a milestone.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">6</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Test optionality on a schedule</div>
+              <div class="hr-card-desc">A planned break every few months isn't discipline — it's maintenance. It keeps the tool optional and gives you accurate information about where you are.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">7</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Separate the functions</div>
+              <div class="hr-card-desc">Using for sleep, for pain, for anxiety, and for recreation are different habits with different cost structures. Treating them as one makes it impossible to see where the problem is.</div>
+            </div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-card-num">8</div>
+            <div class="hr-card-content">
+              <div class="hr-card-title">Know which side of the line you're on</div>
+              <div class="hr-card-desc">There's a threshold where harm reduction is the right frame — and one where support is. The framework helps you find that threshold. Being honest about which side you're on is the whole point.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBSTANCE SNAPSHOTS -->
+      <div class="section reveal" id="snapshots">
+        <div class="section-label">Substance-Specific</div>
+        <h2>Quick Ledger Orientation</h2>
+        <p>The framework applies to all of these. What differs is which cost layer dominates — and what the dependency curve looks like. One paragraph each. Apply the eight questions from there.</p>
+        <div class="snapshot-grid">
+
+          <div class="snapshot-card">
+            <div class="snapshot-header">
+              <div class="snapshot-icon">💊</div>
+              <div class="snapshot-name">Cocaine</div>
+              <div class="snapshot-tag tag-financial">Financial</div>
+            </div>
+            <div class="snapshot-body">
+              Cocaine's dominant cost layer is financial — and it escalates faster than almost any other substance on this list. Tolerance builds quickly, binge patterns emerge reliably, and the gap between "weekend use" and "daily use" closes faster than users expect. The financial ledger at daily use can reach $10,000–30,000+ per year before most people have named the pattern as a problem. The psychological cost runs alongside it: the comedown reliably amplifies anxiety and depression, creating a use cycle that self-reinforces. Nasal and cardiovascular damage accrue silently.
+              <div class="snapshot-ledger-note">Primary ledger lens: Financial escalation rate + psychological loop. Run question 4 (tolerance) and question 6 (trigger pattern) first.</div>
+            </div>
+          </div>
+
+          <div class="snapshot-card">
+            <div class="snapshot-header">
+              <div class="snapshot-icon">⚡</div>
+              <div class="snapshot-name">Methamphetamine</div>
+              <div class="snapshot-tag tag-opportunity">Opportunity</div>
+            </div>
+            <div class="snapshot-body">
+              Meth's dominant cost is opportunity — specifically, the cognitive and motivational damage that accumulates at regular use and doesn't fully reverse with abstinence at sustained heavy use. The dopamine system damage is in a different tier than any other stimulant on this list. The financial cost is comparatively low; the physical and psychological cost is among the highest of any substance here. The dependency curve moves from occasional to structural faster than most users anticipate, and the window for low-cost exit narrows quickly. This is the substance where the optionality test becomes most urgently relevant, most quickly.
+              <div class="snapshot-ledger-note">Primary ledger lens: Cognitive and motivational opportunity cost. Run question 7 (optionality) as the first signal.</div>
+            </div>
+          </div>
+
+          <div class="snapshot-card">
+            <div class="snapshot-header">
+              <div class="snapshot-icon">🔴</div>
+              <div class="snapshot-name">Heroin &amp; Opioids</div>
+              <div class="snapshot-tag tag-physical">Physical</div>
+            </div>
+            <div class="snapshot-body">
+              The physical dependency layer dominates the opioid ledger more completely than any other substance on this site. Tolerance develops rapidly; physical withdrawal is intensely uncomfortable and begins within hours of a missed dose at regular use. Optionality — the ability to simply not use — disappears faster than the user recognizes it happening. The fentanyl contamination reality adds a cost that exists on no other ledger: the possibility that a single use event is fatal, regardless of tolerance or intent. This is the one substance where harm reduction tools (naloxone access, fentanyl test strips, never using alone) are not optional additions to the framework — they are the framework.
+              <div class="snapshot-ledger-note">Primary ledger lens: Physical dependency depth and speed. The optionality test result here is a medical signal, not just a behavioral one.</div>
+            </div>
+          </div>
+
+          <div class="snapshot-card">
+            <div class="snapshot-header">
+              <div class="snapshot-icon">💉</div>
+              <div class="snapshot-name">Benzodiazepines</div>
+              <div class="snapshot-tag tag-physical">Physical</div>
+            </div>
+            <div class="snapshot-body">
+              Benzos are the most underestimated substance on this page — prescribed, normalized, and carrying one of the most dangerous withdrawal profiles of anything on this list. Physical dependency develops within weeks of daily use at therapeutic doses. The dependency curve moves slowly and invisibly, which means most people don't recognize they're physically dependent until they try to stop. Benzo withdrawal — unlike opioid withdrawal — can be medically dangerous (seizure risk) and should involve physician supervision at any significant use level. The psychological cost is the gradual hollowing of emotional range: benzos suppress anxiety but also dampen motivation, creativity, and emotional depth at sustained use.
+              <div class="snapshot-ledger-note">Primary ledger lens: Physical dependency depth, often without subjective sense of "being addicted." If reducing, involve a doctor.</div>
+            </div>
+          </div>
+
+          <div class="snapshot-card">
+            <div class="snapshot-header">
+              <div class="snapshot-icon">🍄</div>
+              <div class="snapshot-name">Psychedelics</div>
+              <div class="snapshot-tag tag-psych">Psychological</div>
+            </div>
+            <div class="snapshot-body">
+              Psychedelics are the genuinely different entry on this page — lowest dependency risk of any substance listed here, no significant physical withdrawal profile, and an emerging clinical research base that is producing legitimate therapeutic applications. The cost structure is primarily psychological and contextual: difficult experiences (bad trips, psychological destabilization) are real and can have lasting impact, particularly at high doses, in unsupported settings, or with pre-existing mental health vulnerabilities. The ledger question for psychedelics isn't about dependency — it's about integration. What you do with the experience matters as much as the experience itself. Frequent use for recreation rather than intentional use is where the risk profile shifts.
+              <div class="snapshot-ledger-note">Primary ledger lens: Set, setting, integration, and frequency. Less about dependency, more about whether the experiences are being used well.</div>
+            </div>
+          </div>
+
+          <div class="snapshot-card">
+            <div class="snapshot-header">
+              <div class="snapshot-icon">🧪</div>
+              <div class="snapshot-name">Stimulants &amp; MDMA</div>
+              <div class="snapshot-tag tag-mixed">Mixed</div>
+            </div>
+            <div class="snapshot-body">
+              This category covers two distinct conversations. Prescription stimulants (Adderall, Ritalin) used non-prescriptively carry cardiovascular risk, dependency potential, and a legitimacy buffer that makes the ledger harder to build honestly — "it's prescribed" is doing work that "it's a stimulant I use daily" should be doing instead. MDMA has a separate concern: neurotoxicity at frequency. The research on serotonin system damage at regular MDMA use is consistent enough to treat frequency as the primary variable. The general principle holding both: the "it's controlled / it's prescribed / it's being studied clinically" framing doesn't replace the ledger — it just makes the ledger harder to start.
+              <div class="snapshot-ledger-note">Primary ledger lens: Frequency for MDMA; honest dependency assessment for prescription stimulants used outside prescription.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SOVEREIGNTY -->
+      <div class="sovereignty reveal">
+        <h2>What are you actually getting from this — and <em>what is it costing you that you haven't named?</em></h2>
+        <p>The first question is easy. You've been answering it, implicitly, every time you used. The answer lives in the relief, the ease, the function, the feeling. You know what it is.</p>
+        <p>The second question is the ledger. The unnamed costs are the ones that compound the longest, run the deepest, and stay invisible until someone asks the question out loud.</p>
+        <p>You've read this far. You already know the answer is worth finding.</p>
+        <span class="tagline">Everything has a cost. You choose which ones to pay.</span>
+
+        <div class="safety-net">
+          <p>If the ledger came back heavier than a framework covers — SAMHSA's National Helpline is free, confidential, and available 24/7: <a href="tel:18006624357">1-800-662-4357</a>. You don't have to have it figured out before you call.</p>
+        </div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sc-header">On This Page</div>
+        <div class="sc-body">
+          <a href="#why" class="sc-nav-link">Why People Don't</a>
+          <a href="#framework" class="sc-nav-link">The Three-Cost Framework</a>
+          <a href="#upside" class="sc-nav-link">Name the Upside First</a>
+          <a href="#questions" class="sc-nav-link">The Eight Questions</a>
+          <a href="#optionality" class="sc-nav-link">The Optionality Test</a>
+          <a href="#template" class="sc-nav-link">Self-Ledger Template</a>
+          <a href="#wall" class="sc-nav-link">When the Ledger Comes Back Heavy</a>
+          <a href="#principles" class="sc-nav-link">Harm Reduction Principles</a>
+          <a href="#snapshots" class="sc-nav-link">Substance Snapshots</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">The Three Costs</div>
+        <div class="sc-body">
+          <span class="sc-tag">Financial</span>
+          <span class="sc-tag">Psychological</span>
+          <span class="sc-tag">Opportunity</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Covered on This Site</div>
+        <div class="sc-body">
+          <a href="/nicotine/" class="sc-nav-link">🚬 Nicotine</a>
+          <a href="/caffeine/" class="sc-nav-link">☕ Caffeine</a>
+          <a href="/thc/" class="sc-nav-link">🌿 THC / Cannabis</a>
+          <a href="/alcohol/" class="sc-nav-link">🥃 Alcohol</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Framework Also Applies To</div>
+        <div class="sc-body">
+          <div class="sc-expand-item">🎰 Gambling & sports betting</div>
+          <div class="sc-expand-item">📱 Screen time & social media</div>
+          <div class="sc-expand-item">🍔 Food & eating patterns</div>
+          <div class="sc-expand-item">🛒 Spending & shopping</div>
+          <div class="sc-expand-item">💊 Prescription medications</div>
+          <div class="sc-expand-item">🤝 Relationships & codependency</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <script>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    // SELF LEDGER — live financial calc
+    function updateLedger() {
+      const weekly = parseFloat(document.getElementById('sl-weekly').value);
+      if (isNaN(weekly) || weekly <= 0) {
+        document.getElementById('sl-annual').value = '';
+        document.getElementById('sl-5yr').value = '';
+        return;
+      }
+      const annual = Math.round(weekly * 52);
+      const fiveYr = annual * 5;
+      document.getElementById('sl-annual').value = '$' + annual.toLocaleString() + ' / year';
+      document.getElementById('sl-5yr').value = '$' + fiveYr.toLocaleString() + ' over 5 years';
+    }
+  </script>
+
+</body>
+</html>

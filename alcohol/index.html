@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alcohol — ViceBudget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- * lone wolf, own tools | Matt Livingston -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #f5f0e8;
+      --stone: #e8e0d0;
+      --sand: #d4c9b4;
+      --bark: #8c7355;
+      --cedar: #5c4a32;
+      --charcoal: #2a2420;
+      --text: #3a3028;
+      --text-light: #6b5f52;
+      --accent: #b85c38;
+
+      /* Alcohol palette — deep burgundy / warm amber */
+      --alc: #8b3a3a;
+      --alc-dark: #5c1f1f;
+      --alc-mid: #b86060;
+      --alc-light: #f5e8e8;
+      --alc-border: #d4a0a0;
+
+      --green: #4a7c59;
+      --amber: #8b6914;
+      --red-soft: #9e4a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 247, 242, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cedar);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem 2rem 5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .vice-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--alc-light);
+      border: 1px solid var(--alc-border);
+      color: var(--alc-dark);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .hero-thesis {
+      font-family: 'Lora', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 660px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .hero-intro {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 660px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    /* LAYOUT */
+    .page-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .main-col { min-width: 0; }
+    .sidebar { position: sticky; top: 6rem; }
+
+    /* SECTIONS */
+    .section {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--stone);
+    }
+
+    .section:first-child { border-top: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--alc-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .section h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .key-line {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--alc-dark);
+      border-left: 3px solid var(--alc-border);
+      padding: 0.75rem 1.2rem;
+      background: var(--alc-light);
+      border-radius: 0 5px 5px 0;
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    /* MECHANISM */
+    .mechanism-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .mechanism-item {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .mechanism-item.full { grid-column: 1 / -1; }
+
+    .mechanism-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+
+    .mechanism-value { font-size: 0.92rem; color: var(--text); line-height: 1.5; }
+
+    /* FACTOR LIST */
+    .factor-list {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .factor-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      line-height: 1.55;
+    }
+
+    .fi-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    .fi-dot.green { background: var(--green); }
+    .fi-dot.amber { background: var(--amber); }
+    .fi-dot.red { background: var(--red-soft); }
+    .factor-item strong { font-weight: 500; color: var(--charcoal); }
+
+    /* SOCIAL CONTRACT CARDS */
+    .social-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      padding: 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--alc-mid);
+    }
+
+    .social-card-title {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.6rem;
+    }
+
+    .social-card-desc {
+      font-size: 0.84rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* COST TABLE */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      font-size: 0.92rem;
+    }
+
+    .cost-table th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      padding: 0.6rem 1rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .cost-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--stone);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .cost-table tr:last-child td { border-bottom: none; }
+    .td-highlight { font-family: 'Lora', serif; font-weight: 600; font-size: 1.05rem; color: var(--accent); }
+    .td-note { color: var(--text-light); font-size: 0.82rem; }
+
+    /* CALCULATOR */
+    .calc-embed {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+
+    .calc-title { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--charcoal); margin-bottom: 0.3rem; }
+    .calc-sub { font-size: 0.82rem; color: var(--text-light); margin-bottom: 1.2rem; }
+
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .calc-group { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .calc-group label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .calc-group select,
+    .calc-group input {
+      padding: 0.55rem 0.8rem;
+      border: 1.5px solid var(--stone);
+      border-radius: 4px;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .calc-group select:focus,
+    .calc-group input:focus { border-color: var(--alc-dark); }
+
+    .btn-calc {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--alc-dark);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-calc:hover { background: var(--charcoal); }
+
+    .calc-result {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--alc-light);
+      border-radius: 5px;
+      border: 1px solid var(--alc-border);
+    }
+
+    .calc-result.show { display: block; }
+
+    .cr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.35rem 0;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--alc-border);
+    }
+
+    .cr-row:last-child { border-bottom: none; }
+    .cr-label { color: var(--text-light); }
+    .cr-val { font-family: 'Lora', serif; font-weight: 600; color: var(--charcoal); }
+    .cr-val.big { font-size: 1.1rem; color: var(--accent); }
+
+    /* RECOVERY DAY TIMELINE */
+    .recovery-timeline {
+      margin: 2rem 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    .recovery-timeline::before {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: linear-gradient(to right, var(--alc-border), var(--alc-mid), var(--amber), var(--stone));
+      z-index: 0;
+    }
+
+    .rt-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .rt-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border: 2px solid;
+    }
+
+    .rt-block:nth-child(1) .rt-circle { background: var(--alc-light); border-color: var(--alc-border); }
+    .rt-block:nth-child(2) .rt-circle { background: #f0e8e8; border-color: #c09090; }
+    .rt-block:nth-child(3) .rt-circle { background: #f5eee0; border-color: #c0a870; }
+    .rt-block:nth-child(4) .rt-circle { background: var(--warm-white); border-color: var(--stone); }
+
+    .rt-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .rt-sub {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      text-align: center;
+      line-height: 1.4;
+      padding: 0 0.25rem;
+    }
+
+    .rt-time {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--alc-dark);
+    }
+
+    /* RATIONALIZATION CARDS */
+    .rat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .rat-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .rat-quote {
+      padding: 1rem 1.2rem 0.75rem;
+      background: var(--alc-light);
+      border-bottom: 1px solid var(--alc-border);
+    }
+
+    .rat-quote-text {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--alc-dark);
+    }
+
+    .rat-reframe {
+      padding: 0.85rem 1.2rem;
+    }
+
+    .rat-reframe-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+
+    .rat-reframe-text {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    .rat-card.full { grid-column: 1 / -1; }
+
+    /* DEP CURVE */
+    .dep-curve { margin-top: 1.5rem; }
+
+    .dep-step {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1.1rem 1.2rem;
+      position: relative;
+    }
+
+    .dep-step::before {
+      content: '';
+      position: absolute;
+      left: 2rem;
+      top: 3.2rem;
+      bottom: -1.1rem;
+      width: 1px;
+      background: var(--stone);
+    }
+
+    .dep-step:last-child::before { display: none; }
+
+    .dep-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      flex-shrink: 0;
+      border: 1.5px solid;
+    }
+
+    .dep-step.s1 .dep-num { background: #e8f5ee; border-color: #8ec5a0; color: #3a6b4c; }
+    .dep-step.s2 .dep-num { background: #f5edda; border-color: #c9b483; color: #7a5f2a; }
+    .dep-step.s3 .dep-num { background: var(--alc-light); border-color: var(--alc-border); color: var(--alc-dark); }
+    .dep-step.s4 .dep-num { background: #f5dcd4; border-color: #c97060; color: #8a3030; }
+    .dep-step.s5 .dep-num { background: #f0d0c8; border-color: #b85840; color: #7a2820; }
+
+    .dep-title { font-weight: 500; font-size: 0.95rem; color: var(--charcoal); margin-bottom: 0.2rem; }
+    .dep-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.55; }
+
+    .dep-step.s5 {
+      background: #fdf5f4;
+      border-radius: 6px;
+      border: 1px solid #e8c8c4;
+    }
+
+    .dep-medical-note {
+      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--alc-dark);
+      background: var(--alc-light);
+      border: 1px solid var(--alc-border);
+      border-radius: 4px;
+      padding: 0.5rem 0.8rem;
+      line-height: 1.5;
+    }
+
+    /* HR GRID */
+    .hr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .hr-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem;
+    }
+
+    .hr-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      background: var(--alc-light);
+      color: var(--alc-dark);
+      border: 1px solid var(--alc-border);
+      margin-bottom: 0.5rem;
+    }
+
+    .hr-card-title { font-size: 0.88rem; font-weight: 500; color: var(--charcoal); margin-bottom: 0.3rem; }
+    .hr-card-desc { font-size: 0.82rem; color: var(--text-light); line-height: 1.55; }
+
+    /* OPPORTUNITY */
+    .opportunity-list {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .opp-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      padding: 0.6rem 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      font-size: 0.92rem;
+      color: var(--text);
+      font-style: italic;
+      font-family: 'Lora', serif;
+    }
+
+    .opp-item::before {
+      content: '·';
+      color: var(--alc-border);
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      font-style: normal;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+
+    /* LEDGER */
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .ledger-col {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .ledger-header {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ledger-col.green-col .ledger-header { background: #e8f5ee; color: #3a6b4c; border-bottom: 1px solid #c8e8d4; }
+    .ledger-col.red-col .ledger-header { background: #f5e6e4; color: #8a3a30; border-bottom: 1px solid #e8c8c4; }
+    .ledger-col.amber-col .ledger-header { background: #f5f0e0; color: #7a5a20; border-bottom: 1px solid #e0d0a0; }
+
+    .ledger-items { padding: 0.8rem 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .ledger-item {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .ledger-item::before { content: '–'; color: var(--sand); flex-shrink: 0; }
+
+    .ledger-reassess {
+      margin-top: 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    /* CONTROL CHECK */
+    .control-check {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cc-header {
+      padding: 1rem 1.5rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .cc-questions { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .cc-q {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .cc-check {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--stone);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .cc-check.checked { background: var(--alc-dark); border-color: var(--alc-dark); }
+    .cc-check.checked::after { content: '✓'; color: white; font-size: 11px; }
+
+    .cc-result {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--stone);
+      color: var(--text-light);
+      display: none;
+      line-height: 1.6;
+    }
+
+    .cc-result.show { display: block; }
+
+    /* SOVEREIGNTY */
+    .sovereignty {
+      background: var(--charcoal);
+      color: var(--warm-white);
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sovereignty::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(184, 96, 96, 0.06);
+    }
+
+    .sovereignty::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(184, 96, 96, 0.04);
+    }
+
+    .sovereignty h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      color: var(--warm-white);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty h2 em { color: var(--alc-mid); font-style: italic; }
+
+    .sovereignty p {
+      font-size: 0.95rem;
+      color: #a89880;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty .tagline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--alc-mid);
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .safety-net {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #3a3028;
+      position: relative;
+      z-index: 1;
+    }
+
+    .safety-net p {
+      font-size: 0.8rem;
+      color: #6a5a50;
+      line-height: 1.65;
+      max-width: 520px;
+    }
+
+    .safety-net a {
+      color: #8a7a70;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .safety-net a:hover { color: var(--alc-mid); }
+
+    /* SIDEBAR */
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .sc-header {
+      padding: 0.75rem 1.2rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .sc-body { padding: 1rem 1.2rem; }
+
+    .sc-nav-link {
+      display: block;
+      padding: 0.45rem 0;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--stone);
+      transition: color 0.2s;
+    }
+
+    .sc-nav-link:last-child { border-bottom: none; }
+    .sc-nav-link:hover { color: var(--accent); }
+
+    .sc-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.85rem;
+    }
+
+    .sc-stat:last-child { border-bottom: none; }
+    .sc-stat-label { color: var(--text-light); font-size: 0.82rem; }
+    .sc-stat-val { font-family: 'Lora', serif; font-weight: 600; color: var(--charcoal); font-size: 0.88rem; }
+
+    .sc-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--alc-light);
+      color: var(--alc-dark);
+      border: 1px solid var(--alc-border);
+      margin: 0.2rem 0.2rem 0 0;
+    }
+
+    .sc-warning {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: var(--alc-light);
+      border: 1px solid var(--alc-border);
+      border-radius: 5px;
+      font-size: 0.78rem;
+      color: var(--alc-dark);
+      line-height: 1.55;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 800px) {
+      .page-body { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .mechanism-grid,
+      .ledger-grid,
+      .hr-grid,
+      .rat-grid,
+      .social-grid,
+      .calc-row { grid-template-columns: 1fr; }
+      .recovery-timeline { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .recovery-timeline::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/index.html" class="nav-logo">Vice<span>Budget</span></a>
+    <a href="/index.html" class="nav-back">← All Vices</a>
+  </nav>
+
+  <div class="hero">
+    <div class="vice-pill">🥃 Alcohol</div>
+    <h1>The Only Vice It's Rude to Decline.</h1>
+    <p class="hero-thesis">Alcohol is embedded in celebration, grief, boredom, business, and belonging. That's not an accident. It's a cost structure worth understanding.</p>
+    <p class="hero-intro">We're not going to tell you alcohol is poison. We're also not going to pretend the research is ambiguous. Alcohol is the most socially normalized, most heavily marketed, and most consequential vice on this site. The ledger is long — financial, physical, relational, cognitive, professional. Most people who drink regularly have never added it up in full. This page does that.</p>
+  </div>
+
+  <div class="page-body">
+    <div class="main-col">
+
+      <!-- WHAT IT IS -->
+      <div class="section reveal" id="what">
+        <div class="section-label">The Basics</div>
+        <h2>What It Is</h2>
+        <p>Alcohol is ethanol — a central nervous system depressant that works primarily by enhancing GABA (the brain's main inhibitory signal) and suppressing glutamate (its main excitatory signal). The net effect is sedation and disinhibition. The dopamine and serotonin bump that follows is what produces warmth, social ease, and mild euphoria. Understanding the mechanism matters — because what feels like freedom is chemically closer to suppression.</p>
+        <div class="key-line">Alcohol doesn't lower your inhibitions. It suppresses the systems that generate them. What feels like freedom is sedation wearing a social costume.</div>
+        <div class="mechanism-grid">
+          <div class="mechanism-item">
+            <div class="mechanism-label">Classification</div>
+            <div class="mechanism-value">Central nervous system depressant</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Primary action</div>
+            <div class="mechanism-value">GABA enhancement + glutamate suppression</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Processing rate</div>
+            <div class="mechanism-value">~1 standard drink per hour (liver rate-limited — cannot be accelerated)</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Standard drink</div>
+            <div class="mechanism-value">14g pure ethanol: 12oz regular beer, 5oz wine, or 1.5oz spirits</div>
+          </div>
+          <div class="mechanism-item full">
+            <div class="mechanism-label">Delivery forms</div>
+            <div class="mechanism-value">Beer, wine, spirits, cocktails, hard seltzers — different concentrations, same molecule. ABV determines dose, not the vessel.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPSIDE -->
+      <div class="section reveal" id="upside">
+        <div class="section-label">Why People Use It</div>
+        <h2>The Immediate Upside</h2>
+        <p>The upside is real and, in some cases, genuinely significant. Naming it honestly is what makes the ledger credible. The social function of alcohol in particular deserves acknowledgment — not as justification, but as accurate accounting.</p>
+        <p>Entire social architectures are built around it. Weddings, wakes, first dates, business dinners, Friday nights. The shared drink is a participation ritual in most cultures. That's real human value — and it's worth separating from the dependency question before we get to the rest of the ledger.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Social ease and anxiety reduction</strong> — Genuine and significant. For many people, alcohol is the primary tool for managing social anxiety. The relief is real, which is part of why the dependency risk is high.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Ritual and celebration value</strong> — The toast, the shared bottle, the end-of-week ritual. These carry legitimate human meaning that exists somewhat independently of the ethanol.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Taste and craft</strong> — Wine, whiskey, and craft beer cultures have genuine depth. Appreciating complexity in a drink is a real thing, distinct from dependency.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Mild euphoria and relaxation</strong> — The unwinding effect is real. Short-term stress relief is documented. The cost structure of that relief is what this page examines.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Belonging and shared experience</strong> — Drinking with others creates social bonding through shared vulnerability and lowered guardedness. This is the upside most people are actually optimizing for.</div></div>
+        </div>
+      </div>
+
+      <!-- SOCIAL CONTRACT -->
+      <div class="section reveal" id="social">
+        <div class="section-label">What Makes Alcohol Different</div>
+        <h2>The Social Contract</h2>
+        <p>No other substance on this site comes with a social enforcement mechanism. Nobody asks why you're not having a second coffee. Nobody requires an explanation for skipping the pre-workout. With alcohol, "I'm not drinking tonight" opens a negotiation. <em>"Why not? Just one. Are you okay? You're not fun when you're sober."</em></p>
+        <p>That asymmetry is worth examining before anything else — because it means many people who drink regularly have never genuinely chosen to. They've just never had a socially frictionless reason not to.</p>
+        <div class="social-grid">
+          <div class="social-card">
+            <div class="social-card-title">The Presumption of Participation</div>
+            <div class="social-card-desc">Drinking is the default at most social events. Not drinking is the deviation that requires explanation. The burden of justification runs in the wrong direction for a substance with alcohol's cost profile.</div>
+          </div>
+          <div class="social-card">
+            <div class="social-card-title">The Sobriety Spotlight</div>
+            <div class="social-card-desc">Abstaining makes you visible in a way that drinking never does. The person not drinking becomes the subject of attention, concern, or mild social pressure. The drinker is invisible by default.</div>
+          </div>
+          <div class="social-card">
+            <div class="social-card-title">The Social Lubricant Dependency</div>
+            <div class="social-card-desc">When an entire gathering runs on alcohol as the shared social solvent, opting out can feel like refusing the terms of the event itself — not just a drink, but belonging.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FINANCIAL -->
+      <div class="section reveal" id="financial">
+        <div class="section-label">Cost Layer 01</div>
+        <h2>Financial Cost</h2>
+        <p>Alcohol's financial cost is consistently underestimated because it's spread across contexts — the bar tab, the dinner bottle, the home case, the Uber home, the late-night food, the next-day pharmacy run. No single purchase feels significant. The annual total usually does.</p>
+
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Pattern</th>
+              <th>Weekly Est.</th>
+              <th>Annual</th>
+              <th>5-Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Casual (2–3 drinks out, 2x/week)</td>
+              <td>$30–60</td>
+              <td class="td-highlight">$1,560–3,120</td>
+              <td>$7.8K–15.6K</td>
+            </tr>
+            <tr>
+              <td>Home drinker (wine 3–4x/week)</td>
+              <td>$25–50</td>
+              <td class="td-highlight">$1,300–2,600</td>
+              <td>$6.5K–13K</td>
+            </tr>
+            <tr>
+              <td>Bar regular (4+ drinks, 3x/week)</td>
+              <td>$120–225</td>
+              <td class="td-highlight">$6,240–11,700</td>
+              <td>$31K–58.5K</td>
+            </tr>
+            <tr>
+              <td>Daily drinker (moderate)</td>
+              <td>$50–100</td>
+              <td class="td-highlight">$2,600–5,200</td>
+              <td>$13K–26K</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="td-note">Hidden multipliers not included: rideshare, late-night food, next-day recovery purchases, lost productivity, and social costs. Add 20–40% for a realistic total.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="calc-embed">
+          <div class="calc-title">Your Alcohol Cost</div>
+          <div class="calc-sub">Enter your primary pattern. Hidden multipliers (Uber, food, etc.) typically add 20–40% on top.</div>
+          <div class="calc-row">
+            <div class="calc-group">
+              <label>Primary Pattern</label>
+              <select id="a-method">
+                <option value="">Select…</option>
+                <option value="casual">Casual bar/restaurant</option>
+                <option value="home">Home drinker</option>
+                <option value="regular">Regular bar-goer</option>
+                <option value="daily">Daily drinker</option>
+                <option value="mixed">Mixed / depends on week</option>
+              </select>
+            </div>
+            <div class="calc-group">
+              <label>Weekly Spend ($)</label>
+              <input type="number" id="a-spend" placeholder="e.g. 50" min="0" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calcAlc()">Calculate →</button>
+          <div class="calc-result" id="a-result">
+            <div class="cr-row"><span class="cr-label">Monthly</span><span class="cr-val" id="ar-mo">—</span></div>
+            <div class="cr-row"><span class="cr-label">Annual</span><span class="cr-val big" id="ar-yr">—</span></div>
+            <div class="cr-row"><span class="cr-label">5-Year</span><span class="cr-val" id="ar-5">—</span></div>
+            <div class="cr-row"><span class="cr-label">With hidden multipliers (+30%)</span><span class="cr-val" id="ar-real">—</span></div>
+            <div class="cr-row"><span class="cr-label">That's roughly…</span><span class="cr-val" id="ar-eq">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHYSICAL -->
+      <div class="section reveal" id="physical">
+        <div class="section-label">Cost Layer 02</div>
+        <h2>Physical Cost</h2>
+        <p>Alcohol's physical cost profile is the most extensively studied of any substance on this site — and the most frequently rationalized away. The research is not ambiguous at sustained heavy use. At moderate use, the picture is more nuanced. The nuance doesn't erase the cost; it contextualizes it.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Liver progression</strong> — Fatty liver is reversible; fibrosis and cirrhosis are not. The timeline from heavy use to liver disease is years, not decades. Most people are not tracking their position on that timeline.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Cancer risk</strong> — Dose-dependent, linked to 7 cancer types including breast, colon, liver, esophageal, and oral. One of the most underreported facts about alcohol. There is no established safe threshold for cancer risk.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Cardiovascular</strong> — Complex picture. Moderate use shows some protective signals in older research; more recent data is less favorable. Heavy use increases cardiomyopathy, arrhythmia, and hypertension risk clearly.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Sleep architecture</strong> — Alcohol sedates but fragments sleep, suppresses REM, and causes rebound wakefulness in the second half of the night. The "I slept better after a drink" experience is physiologically incorrect.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Immune suppression</strong> — Even moderate drinking measurably reduces immune function for 24 hours post-consumption. Relevant at the frequency most regular drinkers operate at.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Neurological</strong> — Accelerated cognitive decline and measurable brain volume reduction at sustained heavy use. The "alcohol kills brain cells" framing is crude but not entirely wrong.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Withdrawal risk</strong> — Alcohol and benzodiazepines are the two substances where withdrawal can be medically dangerous. Seizure risk at severe physical dependency is real and requires medical supervision. This is not a harm-reduction-only situation at that stage.</div></div>
+        </div>
+      </div>
+
+      <!-- RECOVERY DAY -->
+      <div class="section reveal" id="recovery">
+        <div class="section-label">The Invisible Cost</div>
+        <h2>The Recovery Day</h2>
+        <p>This is the most undertracked cost on this entire site. Most people account for the night they drank. Almost nobody accounts for the next 18–36 hours. But that window has a documented cost profile that runs whether or not you have a headache.</p>
+
+        <div class="recovery-timeline">
+          <div class="rt-block">
+            <div class="rt-time">Night</div>
+            <div class="rt-circle">🥃</div>
+            <div class="rt-label">The Drink</div>
+            <div class="rt-sub">The cost everyone tracks</div>
+          </div>
+          <div class="rt-block">
+            <div class="rt-time">Next Morning</div>
+            <div class="rt-circle">🌫️</div>
+            <div class="rt-label">Grey Day</div>
+            <div class="rt-sub">Cognitive output reduced, mood blunted, motivation flat</div>
+          </div>
+          <div class="rt-block">
+            <div class="rt-time">+18–36 Hours</div>
+            <div class="rt-circle">🔋</div>
+            <div class="rt-label">Recovery Window</div>
+            <div class="rt-sub">Processing speed, decision quality, emotional regulation all below baseline</div>
+          </div>
+          <div class="rt-block">
+            <div class="rt-time">+36–48 Hours</div>
+            <div class="rt-circle">📉</div>
+            <div class="rt-label">The Deficit</div>
+            <div class="rt-sub">Sleep debt, REM suppression, dehydration compound into next cycle</div>
+          </div>
+        </div>
+
+        <p>The cognitive and emotional impairment in this window is measurable — reduced working memory, slower processing speed, degraded decision quality, and reduced emotional regulation capacity — even without a clinical hangover. Most people absorb this as "just how I feel on Saturdays" rather than connecting it to Friday.</p>
+        <p>The math: 2 drinking nights per week × 1 recovery day = approximately 104 reduced-function days per year. Most people have never calculated that number. It's worth calculating once.</p>
+      </div>
+
+      <!-- RATIONALIZATION MACHINE -->
+      <div class="section reveal" id="rationalization">
+        <div class="section-label">Alcohol's Most Distinctive Feature</div>
+        <h2>The Rationalization Machine</h2>
+        <p>No other substance on this site has as sophisticated a cultural apparatus for pre-justifying its use. The rationalizations aren't lies — they contain real truth. That's what makes them effective. The job isn't to reject them wholesale. It's to notice when they're running automatically.</p>
+        <div class="rat-grid">
+          <div class="rat-card">
+            <div class="rat-quote"><div class="rat-quote-text">"I deserve it."</div></div>
+            <div class="rat-reframe">
+              <div class="rat-reframe-label">The reframe</div>
+              <div class="rat-reframe-text">The reward framing makes drinking feel earned rather than chosen. Deserve is doing a lot of work here — and it resets every day without requiring examination.</div>
+            </div>
+          </div>
+          <div class="rat-card">
+            <div class="rat-quote"><div class="rat-quote-text">"Just to take the edge off."</div></div>
+            <div class="rat-reframe">
+              <div class="rat-reframe-label">The reframe</div>
+              <div class="rat-reframe-text">Stress management framing that outsources emotional regulation to a substance. The edge comes back. Tolerance means more is required over time to take the same edge off.</div>
+            </div>
+          </div>
+          <div class="rat-card">
+            <div class="rat-quote"><div class="rat-quote-text">"Everyone does it."</div></div>
+            <div class="rat-reframe">
+              <div class="rat-reframe-label">The reframe</div>
+              <div class="rat-reframe-text">Prevalence substituting for evaluation. A lot of people do a lot of things at significant personal cost. Popularity is not a ledger item.</div>
+            </div>
+          </div>
+          <div class="rat-card">
+            <div class="rat-quote"><div class="rat-quote-text">"I can stop whenever I want."</div></div>
+            <div class="rat-reframe">
+              <div class="rat-reframe-label">The reframe</div>
+              <div class="rat-reframe-text">The control signal that is most common in people who have never actually tested it. Whenever is doing a lot of work. When, specifically, have you chosen not to?</div>
+            </div>
+          </div>
+          <div class="rat-card full">
+            <div class="rat-quote"><div class="rat-quote-text">"It's fine in moderation."</div></div>
+            <div class="rat-reframe">
+              <div class="rat-reframe-label">The reframe</div>
+              <div class="rat-reframe-text">Possibly true — and most people who say this haven't tracked whether they're actually moderate. Moderation is a data claim, not a self-perception. What does your last 30 days actually show?</div>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: 1.5rem;">The rationalization machine isn't evidence of weakness. It's evidence of how deeply alcohol is embedded in the social and psychological architecture most people operate in. The machine runs automatically. Noticing it doesn't require quitting. It just requires a moment of actual choice.</p>
+      </div>
+
+      <!-- PSYCHOLOGICAL -->
+      <div class="section reveal" id="psychological">
+        <div class="section-label">Cost Layer 02b</div>
+        <h2>Psychological Cost</h2>
+        <p>Alcohol's psychological costs are diffuse, bidirectional, and often mistaken for the baseline conditions they're actually generating. The anxiety you're drinking to relieve may be the anxiety alcohol is creating. The cycle runs quietly.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>The anxiety cycle</strong> — Short-term relief, rebound anxiety the next day, drinking to relieve that anxiety. This is one of the most well-documented feedback loops in addiction research and one of the most common invisible patterns in moderate-to-heavy drinkers.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Depression correlation</strong> — Bidirectional and significant. Alcohol worsens depression; depression increases drinking. Many people treating low mood with alcohol are maintaining the condition they're trying to relieve.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Emotional processing avoidance</strong> — Drinking to not feel difficult things means difficult things don't get processed. The emotional backlog is real and tends to surface in moments and ways that feel unrelated to drinking.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Relationship costs</strong> — Even at moderate regular use, alcohol measurably impairs empathy, conflict resolution, and attunement. The version of you that shows up in difficult conversations after drinking is not your best negotiator.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Professional exposure</strong> — Impaired judgment, missed mornings, and reputation risk at business events. Lower stakes than they appear until they're not.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Blackout events</strong> — Memory consolidation failure during heavy use is not just embarrassing. It's cognitively significant — and the behavior that occurred in that window is real regardless of whether it's remembered.</div></div>
+        </div>
+      </div>
+
+      <!-- OPPORTUNITY -->
+      <div class="section reveal" id="opportunity">
+        <div class="section-label">Cost Layer 03</div>
+        <h2>Opportunity Cost</h2>
+        <p>The opportunity cost of alcohol lives mostly in what doesn't happen — the mornings that start at a deficit, the decisions made in a state that wouldn't have been chosen, the recovery days absorbed as just how things are.</p>
+        <div class="opportunity-list">
+          <div class="opp-item">The 104 reduced-function days per year that never show up on any receipt.</div>
+          <div class="opp-item">The decisions made in or after drinking that wouldn't have been made otherwise.</div>
+          <div class="opp-item">The fitness goals that keep resetting after Thursday nights.</div>
+          <div class="opp-item">The financial drift — visible in the annual total, invisible in the daily spend.</div>
+          <div class="opp-item">The relationships that carry a version of you that only exists when drinking.</div>
+          <div class="opp-item">The mornings that were supposed to be productive and started at a deficit instead.</div>
+          <div class="opp-item">The difficult feelings that were deferred rather than processed — and are still waiting.</div>
+        </div>
+      </div>
+
+      <!-- DEPENDENCY CURVE -->
+      <div class="section reveal" id="curve">
+        <div class="section-label">The Progression</div>
+        <h2>The Dependency Curve</h2>
+        <p>Alcohol dependency develops more gradually than most people expect — and the cultural normalization at each step makes it easy to misread where you are. The rationalization machine runs at every level.</p>
+        <div class="dep-curve">
+          <div class="dep-step s1">
+            <div class="dep-num">1</div>
+            <div class="dep-content">
+              <div class="dep-title">Social / Occasional</div>
+              <div class="dep-desc">Genuinely situational. Easy to skip without noticing. No pull outside of social context. The drink adds to the occasion; it's not the occasion.</div>
+            </div>
+          </div>
+          <div class="dep-step s2">
+            <div class="dep-num">2</div>
+            <div class="dep-content">
+              <div class="dep-title">Regular Recreational</div>
+              <div class="dep-desc">Weekly pattern established. Mild restlessness on weeks without it. Starting to structure around drinking occasions. Still feels like preference.</div>
+            </div>
+          </div>
+          <div class="dep-step s3">
+            <div class="dep-num">3</div>
+            <div class="dep-content">
+              <div class="dep-title">Stress-Linked</div>
+              <div class="dep-desc">Using to decompress, manage anxiety, or reward a hard day. The rationalization machine is now active. This step often feels like a solution rather than a pattern to examine.</div>
+            </div>
+          </div>
+          <div class="dep-step s4">
+            <div class="dep-num">4</div>
+            <div class="dep-content">
+              <div class="dep-title">Daily Habit</div>
+              <div class="dep-desc">Consistent daily use. Tolerance building. Mornings sometimes affected. Reducing feels difficult. The cost structure is now compounding across all layers simultaneously.</div>
+            </div>
+          </div>
+          <div class="dep-step s5">
+            <div class="dep-num">5</div>
+            <div class="dep-content">
+              <div class="dep-title">Physical Dependency</div>
+              <div class="dep-desc">Withdrawal symptoms present — tremor, sweating, anxiety, insomnia. Dose required just to feel functional. This is medical territory.</div>
+              <div class="dep-medical-note">⚠ Physical alcohol withdrawal can include seizures and is one of the few substance withdrawal syndromes that can be medically dangerous. If you are at this stage, please involve a doctor before stopping.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HARM REDUCTION -->
+      <div class="section reveal" id="reduction">
+        <div class="section-label">Agency, Not Abstinence</div>
+        <h2>Harm Reduction Strategies</h2>
+        <p>These are not sobriety strategies. They're clarity strategies — tools for making sure drinking stays in the "chosen" column and the cost structure stays visible.</p>
+        <div class="hr-grid">
+          <div class="hr-card">
+            <div class="hr-tag">Tracking</div>
+            <div class="hr-card-title">Count Standard Drinks</div>
+            <div class="hr-card-desc">Most people underestimate by 30–50%. A large restaurant pour of wine is often 2 standard drinks. A craft IPA at 8% ABV in a pint glass is nearly 2. Know your actual number before you assess your pattern.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Accounting</div>
+            <div class="hr-card-title">Plan the Recovery Day</div>
+            <div class="hr-card-desc">If you're drinking tonight, the next 18–36 hours are part of the cost. Build that into the decision — not as punishment, as honest accounting. Would you still make the same choice if you counted those hours?</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Baseline</div>
+            <div class="hr-card-title">Alcohol-Free Days as Measurement</div>
+            <div class="hr-card-desc">Not as restriction — as data. How easy or difficult are those days? The emotional texture of an alcohol-free day tells you more about your relationship with it than any week of drinking.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">The Pause</div>
+            <div class="hr-card-title">One Second Before the First Drink</div>
+            <div class="hr-card-desc">Is this chosen or automatic? That single question, asked honestly before the first drink, is the most effective harm-reduction tool on this list. It costs nothing and takes one second.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Social</div>
+            <div class="hr-card-title">NA Options Remove the Spotlight</div>
+            <div class="hr-card-desc">A mocktail or NA beer in hand removes the sobriety spotlight entirely. Nobody knows you're not drinking, the social contract is satisfied, and the choice stays yours without negotiation.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Pattern</div>
+            <div class="hr-card-title">Know Your Pattern Type</div>
+            <div class="hr-card-desc">Social drinker, stress drinker, boredom drinker, ritual drinker — different patterns have different intervention points. Misidentifying your pattern makes the strategies feel irrelevant.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEDGER -->
+      <div class="section reveal" id="ledger">
+        <div class="section-label">The Summary</div>
+        <h2>Ledger</h2>
+        <p>Alcohol's ledger is the widest on this site — it touches more cost categories, more relationships, and more people than any other vice listed here. That width doesn't make it a verdict. It makes it worth looking at carefully.</p>
+        <div class="ledger-grid">
+          <div class="ledger-col green-col">
+            <div class="ledger-header">✓ Worth It When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">Use is genuinely chosen, not reflexive or pressured</div>
+              <div class="ledger-item">The recovery day is accounted for and acceptable</div>
+              <div class="ledger-item">Relationships and professional life are unaffected</div>
+              <div class="ledger-item">Emotional regulation doesn't depend on it</div>
+              <div class="ledger-item">You can go weeks without it without noticing</div>
+            </div>
+          </div>
+          <div class="ledger-col red-col">
+            <div class="ledger-header">⚠ Risky When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">Stress, boredom, or anxiety reliably trigger use</div>
+              <div class="ledger-item">The recovery day is being absorbed as just how you feel</div>
+              <div class="ledger-item">Tolerance has increased without a deliberate reason</div>
+              <div class="ledger-item">Relationships have patterns that only exist around drinking</div>
+              <div class="ledger-item">The rationalization machine runs before you've made a decision</div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-reassess ledger-col amber-col">
+          <div class="ledger-header">↺ Reassess When</div>
+          <div class="ledger-items">
+            <div class="ledger-item">You've never tracked how many standard drinks you actually consume</div>
+            <div class="ledger-item">The last time you were bored or uncomfortable without reaching for it is genuinely unclear</div>
+            <div class="ledger-item">The idea of a month off produces an emotional reaction worth examining</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL CHECK -->
+      <div class="section reveal" id="check">
+        <div class="section-label">Quick Self-Assessment</div>
+        <h2>Control Check</h2>
+        <p>Five questions. Answer for where you actually are — not where you'd like to be.</p>
+        <div class="control-check">
+          <div class="cc-header">Check all that apply</div>
+          <div class="cc-questions">
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I can identify the last time I was stressed, bored, or anxious and didn't reach for a drink.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My weekly drink count has not increased over the past 6–12 months.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I have taken 2+ consecutive alcohol-free weeks in the past year without it feeling significant.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My sleep, mood, and morning energy are genuinely unaffected on days following drinking.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I know my actual standard drink count per week — not an estimate, an actual number.</span>
+            </div>
+          </div>
+          <div class="cc-result" id="cc-result"></div>
+        </div>
+      </div>
+
+      <!-- SOVEREIGNTY -->
+      <div class="sovereignty reveal">
+        <h2>When is the last time you were bored, anxious, or uncomfortable — <em>and didn't reach for it?</em></h2>
+        <p>That's not a trick question. It's a data point. The answer tells you whether alcohol is a choice you're making — or a reflex you're managing.</p>
+        <p>If the answer comes quickly and comfortably, you're likely in the "chosen" column. If there's a pause, a search through memory, a vague sense that it's been a while — that pause is information too.</p>
+        <p>Neither answer is a verdict. Both are worth knowing.</p>
+        <span class="tagline">Everything has a cost. You choose which ones to pay.</span>
+
+        <div class="safety-net">
+          <p>If you're reading this and the harm-reduction frame doesn't quite fit where you are right now — you don't have to figure it out alone. SAMHSA's National Helpline is free, confidential, and available 24/7: <a href="tel:18006624357">1-800-662-4357</a>.</p>
+        </div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sc-header">On This Page</div>
+        <div class="sc-body">
+          <a href="#what" class="sc-nav-link">What It Is</a>
+          <a href="#upside" class="sc-nav-link">The Upside</a>
+          <a href="#social" class="sc-nav-link">The Social Contract</a>
+          <a href="#financial" class="sc-nav-link">Financial Cost</a>
+          <a href="#physical" class="sc-nav-link">Physical Cost</a>
+          <a href="#recovery" class="sc-nav-link">The Recovery Day</a>
+          <a href="#rationalization" class="sc-nav-link">Rationalization Machine</a>
+          <a href="#psychological" class="sc-nav-link">Psychological Cost</a>
+          <a href="#opportunity" class="sc-nav-link">Opportunity Cost</a>
+          <a href="#curve" class="sc-nav-link">Dependency Curve</a>
+          <a href="#reduction" class="sc-nav-link">Harm Reduction</a>
+          <a href="#ledger" class="sc-nav-link">Ledger</a>
+          <a href="#check" class="sc-nav-link">Control Check</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Standard Drink Reference</div>
+        <div class="sc-body">
+          <div class="sc-stat">
+            <span class="sc-stat-label">Regular beer (5%)</span>
+            <span class="sc-stat-val">12 oz = 1 drink</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Wine (12%)</span>
+            <span class="sc-stat-val">5 oz = 1 drink</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Spirits (40%)</span>
+            <span class="sc-stat-val">1.5 oz = 1 drink</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Craft IPA (8%)</span>
+            <span class="sc-stat-val">Pint ≈ 1.8 drinks</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Processing rate</span>
+            <span class="sc-stat-val">~1 drink/hour</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Key Windows</div>
+        <div class="sc-body">
+          <div class="sc-stat">
+            <span class="sc-stat-label">Peak BAC</span>
+            <span class="sc-stat-val">30–90 min</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">REM suppression</span>
+            <span class="sc-stat-val">First half of sleep</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Cognitive recovery</span>
+            <span class="sc-stat-val">18–36 hours</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Withdrawal onset</span>
+            <span class="sc-stat-val">6–24 hrs (heavy use)</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Withdrawal peak</span>
+            <span class="sc-stat-val">24–72 hrs</span>
+          </div>
+          <div class="sc-warning">⚠ Severe alcohol withdrawal can be medically dangerous. Involve a doctor if reducing from heavy daily use.</div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Cost Layers</div>
+        <div class="sc-body">
+          <span class="sc-tag">Financial</span>
+          <span class="sc-tag">Physical</span>
+          <span class="sc-tag">Recovery</span>
+          <span class="sc-tag">Psychological</span>
+          <span class="sc-tag">Relational</span>
+          <span class="sc-tag">Opportunity</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Other Vices</div>
+        <div class="sc-body">
+          <a href="/nicotine/" class="sc-nav-link">🚬 Nicotine</a>
+          <a href="/caffeine/" class="sc-nav-link">☕ Caffeine</a>
+          <a href="/thc/" class="sc-nav-link">🌿 THC / Cannabis</a>
+          <a href="/substances/" class="sc-nav-link">⚗️ Other Substances</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <script>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    // CALCULATOR
+    const equivs = [
+      { t: 600,   l: 'a month of groceries' },
+      { t: 1500,  l: 'a weekend trip' },
+      { t: 3000,  l: 'a month of rent in many cities' },
+      { t: 5000,  l: 'a quality used car down payment' },
+      { t: 8000,  l: 'an international vacation' },
+      { t: 15000, l: 'a year of community college' },
+      { t: Infinity, l: 'a number worth sitting with' }
+    ];
+
+    function getEquiv(n) { return equivs.find(e => n < e.t)?.l || 'something significant'; }
+    function fmt(n) { return '$' + Math.round(n).toLocaleString(); }
+
+    function calcAlc() {
+      const method = document.getElementById('a-method').value;
+      const weekly = parseFloat(document.getElementById('a-spend').value);
+      if (!method || isNaN(weekly) || weekly <= 0) {
+        alert('Please select a pattern and enter a weekly spend.');
+        return;
+      }
+      const annual = weekly * 52;
+      const monthly = annual / 12;
+      const five = annual * 5;
+      const real = annual * 1.3;
+      document.getElementById('ar-mo').textContent = fmt(monthly);
+      document.getElementById('ar-yr').textContent = fmt(annual);
+      document.getElementById('ar-5').textContent = fmt(five);
+      document.getElementById('ar-real').textContent = fmt(real) + '/yr';
+      document.getElementById('ar-eq').textContent = getEquiv(annual);
+      document.getElementById('a-result').classList.add('show');
+    }
+
+    // CONTROL CHECK
+    function toggleCheck(el) {
+      el.classList.toggle('checked');
+      updateCheckResult();
+    }
+
+    function updateCheckResult() {
+      const checks = document.querySelectorAll('.cc-check');
+      const count = [...checks].filter(c => c.classList.contains('checked')).length;
+      const result = document.getElementById('cc-result');
+      if (count === 0) { result.classList.remove('show'); return; }
+
+      let msg = '';
+      if (count === 5) {
+        msg = '5/5 — Strong control indicators. Use appears intentional, tracked, and genuinely optional.';
+      } else if (count >= 3) {
+        msg = `${count}/5 — Some control present. The unchecked questions are worth sitting with — particularly the stress/discomfort one.`;
+      } else if (count === 2) {
+        msg = `${count}/5 — Limited control indicators. Worth an honest look at the dependency curve and where your pattern actually sits.`;
+      } else {
+        msg = `${count}/5 — This is worth sitting with carefully. Not a verdict — information. What would two alcohol-free weeks tell you about your relationship with it?`;
+      }
+      result.textContent = msg;
+      result.classList.add('show');
+    }
+  </script>
+
+</body>
+</html>

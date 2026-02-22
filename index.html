@@ -31,6 +31,7 @@
       --thc: #5a7a3a;
       --alcohol: #8b3a3a;
       --substances: #5a4a7a;
+      --screens: #3a5a7a;
     }
 
     html { scroll-behavior: smooth; }
@@ -74,6 +75,7 @@
       font-weight: 600;
       font-size: 1.25rem;
       color: var(--cedar);
+      text-decoration: none;
       letter-spacing: -0.02em;
     }
 
@@ -335,6 +337,7 @@
     .vice-card.thc::before { background: var(--thc); }
     .vice-card.alcohol::before { background: var(--alcohol); }
     .vice-card.substances::before { background: var(--substances); }
+    .vice-card.screens::before    { background: var(--screens); }
 
     .vice-icon {
       font-size: 1.8rem;
@@ -590,7 +593,7 @@
 
     .article-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
       margin-top: 3rem;
     }
@@ -675,13 +678,57 @@
       font-style: normal;
     }
 
+    /* ABOUT STRIP */
+    .about-strip {
+      background: var(--warm-white);
+      border-top: 1px solid var(--stone);
+      padding: 5rem 2rem;
+    }
+
+    .about-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-inner .section-label { text-align: center; margin-bottom: 1rem; }
+
+    .about-inner h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .about-inner p {
+      font-size: 1rem;
+      color: var(--text-light);
+      line-height: 1.8;
+      margin-bottom: 0.75rem;
+    }
+
+    .about-inner p:last-child { margin-bottom: 0; }
+
     /* FOOTER */
     footer {
       background: var(--charcoal);
       color: var(--sand);
-      padding: 3rem 2rem;
-      text-align: center;
+      padding: 4rem 2rem 2.5rem;
     }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid #3a3028;
+    }
+
+    .footer-brand {}
 
     footer .footer-logo {
       font-family: 'Lora', serif;
@@ -689,19 +736,61 @@
       font-weight: 600;
       color: var(--warm-white);
       margin-bottom: 0.75rem;
+      display: block;
     }
 
     footer .footer-logo span { color: var(--accent-soft); }
 
-    footer p {
-      font-size: 0.82rem;
+    .footer-tagline {
+      font-size: 0.85rem;
       color: var(--bark);
-      max-width: 460px;
+      line-height: 1.65;
+      max-width: 260px;
+    }
+
+    .footer-col-title {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5a4a40;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--bark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--sand); }
+
+    .footer-bottom {
+      max-width: 1100px;
       margin: 0 auto;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    footer p {
+      font-size: 0.78rem;
+      color: #4a3f36;
     }
 
     footer .footer-note {
-      margin-top: 1.5rem;
+      margin-top: 0;
       font-size: 0.75rem;
       color: #4a3f36;
     }
@@ -739,6 +828,8 @@
       .nav-links { display: none; }
       .cost-grid { grid-template-columns: 1fr; gap: 2rem; }
       .form-row { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -746,7 +837,7 @@
 
   <!-- NAV -->
   <nav>
-    <div class="nav-logo">Vice<span>Budget</span></div>
+    <a href="/" class="nav-logo">Vice<span>Budget</span></a>
     <ul class="nav-links">
       <li><a href="#vices">By Vice</a></li>
       <li><a href="#calculator">Calculator</a></li>
@@ -781,8 +872,8 @@
   <!-- VICES -->
   <section id="vices" class="section">
     <div class="section-label">By Vice</div>
-    <h2 class="section-title">Pick Your Lens</h2>
-    <p class="section-intro">Each vice has its own cost structure. Select yours to see what's really on the table.</p>
+    <h2 class="section-title">Choose Your Vice</h2>
+    <p class="section-intro">Six breakdowns. Same framework — financial, psychological, and opportunity cost — applied to each habit with full honesty. Pick the one you've been avoiding examining.</p>
     <div class="vice-grid">
 
       <div class="vice-card nicotine reveal">
@@ -794,7 +885,7 @@
           <span class="tag">Dependency</span>
           <span class="tag">Health</span>
         </div>
-        <a href="#" class="vice-card-cta">View breakdown →</a>
+        <a href="/nicotine/" class="vice-card-cta">View breakdown →</a>
       </div>
 
       <div class="vice-card caffeine reveal">
@@ -806,7 +897,7 @@
           <span class="tag">Sleep</span>
           <span class="tag">Anxiety</span>
         </div>
-        <a href="#" class="vice-card-cta">View breakdown →</a>
+        <a href="/caffeine/" class="vice-card-cta">View breakdown →</a>
       </div>
 
       <div class="vice-card thc reveal">
@@ -818,7 +909,7 @@
           <span class="tag">Motivation</span>
           <span class="tag">Cognition</span>
         </div>
-        <a href="#" class="vice-card-cta">View breakdown →</a>
+        <a href="/thc/" class="vice-card-cta">View breakdown →</a>
       </div>
 
       <div class="vice-card alcohol reveal">
@@ -830,7 +921,7 @@
           <span class="tag">Health</span>
           <span class="tag">Relationships</span>
         </div>
-        <a href="#" class="vice-card-cta">View breakdown →</a>
+        <a href="/alcohol/" class="vice-card-cta">View breakdown →</a>
       </div>
 
       <div class="vice-card substances reveal">
@@ -842,7 +933,19 @@
           <span class="tag">Opportunity</span>
           <span class="tag">Risk</span>
         </div>
-        <a href="#" class="vice-card-cta">View breakdown →</a>
+        <a href="/substances/" class="vice-card-cta">View breakdown →</a>
+      </div>
+
+      <div class="vice-card screens reveal">
+        <span class="vice-icon">📱</span>
+        <div class="vice-name">Screen Time</div>
+        <p class="vice-desc">The only vice engineered by teams of people whose job was to make it harder to stop. The dependency is real. The cost is mostly invisible — until you add up the hours.</p>
+        <div class="vice-tags">
+          <span class="tag">Psychological</span>
+          <span class="tag">Opportunity</span>
+          <span class="tag">Attention</span>
+        </div>
+        <a href="/screens/" class="vice-card-cta">View breakdown →</a>
       </div>
 
     </div>
@@ -894,6 +997,7 @@
               <option value="energy">Energy Drinks</option>
               <option value="cannabis">Cannabis</option>
               <option value="alcohol">Alcohol</option>
+              <option value="screens">Screen Time (subscriptions + purchases)</option>
             </select>
           </div>
           <div class="form-group">
@@ -911,6 +1015,7 @@
           <input type="number" id="spend" placeholder="e.g. 12" min="0" />
         </div>
         <button class="btn-calculate" onclick="calculate()">Calculate My Cost →</button>
+        <div id="calc-error" style="display:none; margin-top: 0.5rem; font-size: 0.82rem; color: var(--accent);">Please select a vice and enter a spend amount.</div>
       </div>
       <div class="tool-result" id="result">
         <div class="result-row">
@@ -941,40 +1046,40 @@
       <p class="section-intro reveal">Essays and frameworks for people who want to understand their habits — not just quit them.</p>
       <div class="article-grid">
 
-        <a href="#" class="article-card reveal">
+        <a href="/caffeine/" class="article-card reveal">
           <span class="article-tag">Caffeine</span>
           <div class="article-title">The Hidden Tax on Your Morning Routine</div>
           <p class="article-excerpt">Coffee feels cheap until you add it up. Then add the sleep debt. Then add the anxiety. Here's what the full invoice looks like.</p>
         </a>
 
-        <a href="#" class="article-card reveal">
+        <a href="/thc/" class="article-card reveal">
           <span class="article-tag">Cannabis · Motivation</span>
           <div class="article-title">What Daily THC Use Actually Costs Your Ambition</div>
           <p class="article-excerpt">Not a scare piece. A real look at the research on motivation, working memory, and what "functional use" means in practice.</p>
         </a>
 
-        <a href="#" class="article-card reveal">
+        <a href="/substances/" class="article-card reveal">
           <span class="article-tag">Framework</span>
           <div class="article-title">Harm Reduction Isn't Quitting. That's the Point.</div>
           <p class="article-excerpt">The binary of "using" vs. "clean" misses the point. Clarity about cost is what actually changes behavior — not shame.</p>
         </a>
 
-        <a href="#" class="article-card reveal">
+        <a href="/nicotine/" class="article-card reveal">
           <span class="article-tag">Nicotine</span>
           <div class="article-title">The Opportunity Cost of Nicotine, Quantified</div>
           <p class="article-excerpt">Beyond the health stats you've already tuned out — what does a pack-a-day habit actually cost you in capital and time over a decade?</p>
         </a>
 
-        <a href="#" class="article-card reveal">
+        <a href="/alcohol/" class="article-card reveal">
           <span class="article-tag">Alcohol</span>
           <div class="article-title">Drinking and the Invisible Recovery Day</div>
           <p class="article-excerpt">The financial cost of alcohol is obvious. The 18–36 hours of reduced cognitive output after drinking? That never shows up on the receipt.</p>
         </a>
 
-        <a href="#" class="article-card reveal">
-          <span class="article-tag">Psychology</span>
-          <div class="article-title">Why We Underestimate Recurring Costs</div>
-          <p class="article-excerpt">$8 a day doesn't feel like $2,920 a year. Our brains aren't built for this math. Here's how to actually see it.</p>
+        <a href="/screens/" class="article-card reveal">
+          <span class="article-tag">Screen Time · Attention</span>
+          <div class="article-title">You Are Not the Customer. You Are the Product.</div>
+          <p class="article-excerpt">Social media isn't free. You're paying with attention, mood, and hours. Here's what that costs — in dollars, in days, and in what you're not building.</p>
         </a>
 
       </div>
@@ -987,11 +1092,48 @@
     <cite class="reveal">— The ViceBudget principle</cite>
   </section>
 
+  <!-- ABOUT -->
+  <div class="about-strip">
+    <div class="about-inner">
+      <div class="section-label reveal">About</div>
+      <h2 class="reveal">What ViceBudget Is — and Isn't</h2>
+      <p class="reveal">ViceBudget is a harm-reduction resource. We're not anti-vice — we're anti-default. Every page on this site applies the same three-cost framework: financial, psychological, and opportunity. No moralizing, no scare tactics, no abstinence agenda.</p>
+      <p class="reveal">We're not doctors, therapists, or financial advisors. We're people who think clearly about trade-offs and believe you deserve the same clarity about your habits that you'd apply to any other significant recurring expense in your life.</p>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">Vice<span>Budget</span></div>
-    <p>Harm reduction without the guesswork. Financial clarity for the habits you're keeping — and the ones you're not.</p>
-    <p class="footer-note">© 2026 ViceBudget. Not medical advice. Not financial advice. Just math and honesty.</p>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Vice<span>Budget</span></span>
+        <p class="footer-tagline">Harm reduction without the guesswork. Financial clarity for the habits you're keeping — and the ones you're not.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">By Vice</div>
+        <ul class="footer-links">
+          <li><a href="/nicotine/">🚬 Nicotine</a></li>
+          <li><a href="/caffeine/">☕ Caffeine</a></li>
+          <li><a href="/thc/">🌿 THC / Cannabis</a></li>
+          <li><a href="/alcohol/">🥃 Alcohol</a></li>
+          <li><a href="/substances/">⚗️ Other Substances</a></li>
+          <li><a href="/screens/">📱 Screen Time</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">On This Page</div>
+        <ul class="footer-links">
+          <li><a href="#vices">Choose Your Vice</a></li>
+          <li><a href="#framework">The Framework</a></li>
+          <li><a href="#calculator">Calculator</a></li>
+          <li><a href="#reads">Reading</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ViceBudget. Not medical advice. Not financial advice. Just math and honesty.</p>
+      <p class="footer-note">If you're in crisis: SAMHSA 1-800-662-4357 · Available 24/7</p>
+    </div>
   </footer>
 
   <script>
@@ -1039,9 +1181,10 @@
 
       if (!vice || !freq || isNaN(spend) || spend <= 0) {
         document.getElementById('result').classList.remove('visible');
-        alert('Please fill in all fields with a valid spend amount.');
+        document.getElementById('calc-error').style.display = 'block';
         return;
       }
+      document.getElementById('calc-error').style.display = 'none';
 
       const sessionsPerYear = freqMultipliers[freq];
       const annual = spend * sessionsPerYear;

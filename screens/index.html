@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screen Time & Social Media — ViceBudget</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- * lone wolf, steady course | Matt Livingston -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf7f2;
+      --warm-white: #f5f0e8;
+      --stone: #e8e0d0;
+      --sand: #d4c9b4;
+      --bark: #8c7355;
+      --cedar: #5c4a32;
+      --charcoal: #2a2420;
+      --text: #3a3028;
+      --text-light: #6b5f52;
+      --accent: #b85c38;
+
+      /* Screens palette — deep ocean blue / steel */
+      --scr: #2a4a6a;
+      --scr-dark: #1a2e44;
+      --scr-mid: #4a7aaa;
+      --scr-light: #e8f0f8;
+      --scr-border: #9ab8d8;
+
+      --green: #4a7c59;
+      --amber: #8b6914;
+      --red-soft: #9e4a3a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(250, 247, 242, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--cedar);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-back:hover { color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      padding: 9rem 2rem 5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .vice-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--scr-light);
+      border: 1px solid var(--scr-border);
+      color: var(--scr-dark);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .hero-thesis {
+      font-family: 'Lora', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--text-light);
+      max-width: 660px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .hero-intro {
+      font-size: 1.05rem;
+      color: var(--text);
+      max-width: 660px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    .scope-note {
+      margin-top: 1.5rem;
+      padding: 1rem 1.4rem;
+      background: var(--scr-light);
+      border: 1px solid var(--scr-border);
+      border-radius: 5px;
+      font-size: 0.88rem;
+      color: var(--scr-dark);
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.65s;
+    }
+
+    .scope-note strong { font-weight: 500; }
+
+    /* LAYOUT */
+    .page-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .main-col { min-width: 0; }
+    .sidebar { position: sticky; top: 6rem; }
+
+    /* SECTIONS */
+    .section {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--stone);
+    }
+
+    .section:first-child { border-top: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--scr-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .section h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .section p {
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .key-line {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--scr-dark);
+      border-left: 3px solid var(--scr-border);
+      padding: 0.75rem 1.2rem;
+      background: var(--scr-light);
+      border-radius: 0 5px 5px 0;
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    /* MECHANISM GRID */
+    .mechanism-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .mechanism-item {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+    }
+
+    .mechanism-item.full { grid-column: 1 / -1; }
+
+    .mechanism-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+
+    .mechanism-value { font-size: 0.92rem; color: var(--text); line-height: 1.55; }
+
+    /* PLATFORM CARDS */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .platform-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .platform-header {
+      padding: 0.9rem 1.2rem;
+      border-bottom: 1px solid var(--stone);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .platform-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+    .platform-name {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      flex: 1;
+    }
+
+    .platform-label {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      background: var(--scr-light);
+      color: var(--scr-dark);
+      border: 1px solid var(--scr-border);
+    }
+
+    .platform-body {
+      padding: 1rem 1.2rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* WHATNOT CALLOUT */
+    .whatnot-callout {
+      margin-top: 1rem;
+      background: #fdf5f0;
+      border: 1px solid #e8c0a0;
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .whatnot-header {
+      padding: 0.8rem 1.2rem;
+      background: #f5e8d8;
+      border-bottom: 1px solid #e8c0a0;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #7a4a20;
+    }
+
+    .whatnot-body {
+      padding: 1rem 1.2rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .whatnot-body strong { font-weight: 500; color: var(--charcoal); }
+
+    /* UPSIDE LIST */
+    .factor-list {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .factor-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      line-height: 1.55;
+    }
+
+    .fi-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    .fi-dot.green  { background: var(--green); }
+    .fi-dot.amber  { background: var(--amber); }
+    .fi-dot.red    { background: var(--red-soft); }
+    .fi-dot.blue   { background: var(--scr-mid); }
+    .factor-item strong { font-weight: 500; color: var(--charcoal); }
+
+    /* ATTENTION ECONOMY — two concept cards */
+    .concept-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .concept-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .concept-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .concept-card.extraction::before { background: var(--scr-mid); }
+    .concept-card.budget::before     { background: var(--red-soft); }
+
+    .concept-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .concept-card.extraction .concept-label { color: var(--scr-dark); }
+    .concept-card.budget .concept-label     { color: var(--red-soft); }
+
+    .concept-title {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.6rem;
+    }
+
+    .concept-desc {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* HOURS VISUAL */
+    .hours-table {
+      margin-top: 1.5rem;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.92rem;
+    }
+
+    .hours-table th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bark);
+      padding: 0.6rem 1rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .hours-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--stone);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .hours-table tr:last-child td { border-bottom: none; }
+    .td-hours { font-family: 'Lora', serif; font-weight: 600; font-size: 1.05rem; color: var(--scr-dark); }
+    .td-days  { font-family: 'Lora', serif; font-weight: 600; font-size: 1.05rem; color: var(--accent); }
+    .td-alt   { font-size: 0.82rem; color: var(--text-light); font-style: italic; }
+
+    /* COMPARISON EFFECTS */
+    .comparison-effects {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .effect-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+      border-left: 3px solid var(--scr-border);
+    }
+
+    .effect-title {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      margin-bottom: 0.3rem;
+    }
+
+    .effect-desc {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* CALCULATOR */
+    .calc-embed {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+
+    .calc-title { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--charcoal); margin-bottom: 0.3rem; }
+    .calc-sub   { font-size: 0.82rem; color: var(--text-light); margin-bottom: 1.2rem; }
+
+    .calc-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .calc-group { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .calc-group label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    .calc-group input, .calc-group select {
+      padding: 0.55rem 0.8rem;
+      border: 1.5px solid var(--stone);
+      border-radius: 4px;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .calc-group input:focus,
+    .calc-group select:focus { border-color: var(--scr-dark); }
+
+    .btn-calc {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--scr-dark);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-calc:hover { background: var(--charcoal); }
+
+    .calc-result {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--scr-light);
+      border-radius: 5px;
+      border: 1px solid var(--scr-border);
+    }
+
+    .calc-result.show { display: block; }
+
+    .cr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.35rem 0;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--scr-border);
+    }
+
+    .cr-row:last-child { border-bottom: none; }
+    .cr-label { color: var(--text-light); }
+    .cr-val { font-family: 'Lora', serif; font-weight: 600; color: var(--charcoal); }
+    .cr-val.big { font-size: 1.1rem; color: var(--accent); }
+
+    /* OPPORTUNITY LIST */
+    .opportunity-list {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .opp-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      padding: 0.6rem 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 5px;
+      font-size: 0.92rem;
+      color: var(--text);
+      font-style: italic;
+      font-family: 'Lora', serif;
+    }
+
+    .opp-item::before {
+      content: '·';
+      color: var(--scr-border);
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      font-style: normal;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+
+    /* DEP CURVE */
+    .dep-curve { margin-top: 1.5rem; }
+
+    .dep-step {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      padding: 1.1rem 1.2rem;
+      position: relative;
+    }
+
+    .dep-step::before {
+      content: '';
+      position: absolute;
+      left: 2rem;
+      top: 3.2rem;
+      bottom: -1.1rem;
+      width: 1px;
+      background: var(--stone);
+    }
+
+    .dep-step:last-child::before { display: none; }
+
+    .dep-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      flex-shrink: 0;
+      border: 1.5px solid;
+    }
+
+    .dep-step.s1 .dep-num { background: #e8f5ee; border-color: #8ec5a0; color: #3a6b4c; }
+    .dep-step.s2 .dep-num { background: #e8f0f8; border-color: var(--scr-border); color: var(--scr-dark); }
+    .dep-step.s3 .dep-num { background: #f5edda; border-color: #c9b483; color: #7a5f2a; }
+    .dep-step.s4 .dep-num { background: #f5dcd4; border-color: #c97060; color: #8a3030; }
+    .dep-step.s5 .dep-num { background: #f0d0c8; border-color: #b85840; color: #7a2820; }
+
+    .dep-title { font-weight: 500; font-size: 0.95rem; color: var(--charcoal); margin-bottom: 0.2rem; }
+    .dep-desc  { font-size: 0.85rem; color: var(--text-light); line-height: 1.55; }
+
+    /* HR GRID */
+    .hr-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .hr-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 1.2rem;
+    }
+
+    .hr-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 2px;
+      background: var(--scr-light);
+      color: var(--scr-dark);
+      border: 1px solid var(--scr-border);
+      margin-bottom: 0.5rem;
+    }
+
+    .hr-card-title { font-size: 0.88rem; font-weight: 500; color: var(--charcoal); margin-bottom: 0.3rem; }
+    .hr-card-desc  { font-size: 0.82rem; color: var(--text-light); line-height: 1.55; }
+
+    /* LEDGER */
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .ledger-col {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    .ledger-header {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .ledger-col.green-col  .ledger-header { background: #e8f5ee; color: #3a6b4c; border-bottom: 1px solid #c8e8d4; }
+    .ledger-col.red-col    .ledger-header { background: #f5e6e4; color: #8a3a30; border-bottom: 1px solid #e8c8c4; }
+    .ledger-col.amber-col  .ledger-header { background: #f5f0e0; color: #7a5a20; border-bottom: 1px solid #e0d0a0; }
+
+    .ledger-items { padding: 0.8rem 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .ledger-item {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+    }
+
+    .ledger-item::before { content: '–'; color: var(--sand); flex-shrink: 0; }
+
+    .ledger-reassess {
+      margin-top: 1rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+
+    /* CONTROL CHECK */
+    .control-check {
+      margin-top: 1.5rem;
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cc-header {
+      padding: 1rem 1.5rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .cc-questions { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .cc-q {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .cc-check {
+      width: 18px; height: 18px;
+      border: 1.5px solid var(--stone);
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .cc-check.checked { background: var(--scr-dark); border-color: var(--scr-dark); }
+    .cc-check.checked::after { content: '✓'; color: white; font-size: 11px; }
+
+    .cc-result {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--stone);
+      color: var(--text-light);
+      display: none;
+      line-height: 1.6;
+    }
+
+    .cc-result.show { display: block; }
+
+    /* SOVEREIGNTY */
+    .sovereignty {
+      background: var(--charcoal);
+      color: var(--warm-white);
+      border-radius: 8px;
+      padding: 3rem 2.5rem;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sovereignty::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(74, 122, 170, 0.07);
+    }
+
+    .sovereignty::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(74, 122, 170, 0.05);
+    }
+
+    .sovereignty h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+      color: var(--warm-white);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty h2 em { color: var(--scr-mid); font-style: italic; }
+
+    .sovereignty p {
+      font-size: 0.95rem;
+      color: #a89880;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sovereignty .tagline {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--scr-mid);
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+
+    .safety-net {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #3a3028;
+      position: relative;
+      z-index: 1;
+    }
+
+    .safety-net p {
+      font-size: 0.8rem;
+      color: #6a5a50;
+      line-height: 1.65;
+      max-width: 520px;
+    }
+
+    .safety-net a { color: #8a7a70; text-decoration: underline; text-underline-offset: 2px; }
+    .safety-net a:hover { color: var(--scr-mid); }
+
+    /* SIDEBAR */
+    .sidebar-card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .sc-header {
+      padding: 0.75rem 1.2rem;
+      background: var(--warm-white);
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    .sc-body { padding: 1rem 1.2rem; }
+
+    .sc-nav-link {
+      display: block;
+      padding: 0.45rem 0;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--stone);
+      transition: color 0.2s;
+    }
+
+    .sc-nav-link:last-child { border-bottom: none; }
+    .sc-nav-link:hover { color: var(--accent); }
+
+    .sc-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.85rem;
+    }
+
+    .sc-stat:last-child { border-bottom: none; }
+    .sc-stat-label { color: var(--text-light); font-size: 0.82rem; }
+    .sc-stat-val { font-family: 'Lora', serif; font-weight: 600; color: var(--charcoal); font-size: 0.88rem; }
+
+    .sc-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background: var(--scr-light);
+      color: var(--scr-dark);
+      border: 1px solid var(--scr-border);
+      margin: 0.2rem 0.2rem 0 0;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 800px) {
+      .page-body { grid-template-columns: 1fr; }
+      .sidebar   { position: static; }
+      .mechanism-grid,
+      .platform-grid,
+      .ledger-grid,
+      .hr-grid,
+      .concept-pair,
+      .calc-row   { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/index.html" class="nav-logo">Vice<span>Budget</span></a>
+    <a href="/index.html" class="nav-back">← All Vices</a>
+  </nav>
+
+  <div class="hero">
+    <div class="vice-pill">📱 Screen Time &amp; Social Media</div>
+    <h1>This One Was Designed to Be Hard to Put Down.</h1>
+    <p class="hero-thesis">Every other vice on this site is passive. This one is actively competing for your attention — with a budget larger than most countries' GDP and teams of engineers whose only job was to make leaving harder.</p>
+    <p class="hero-intro">We're not here to tell you that phones are bad, or that screens are destroying society. We're here to name what's actually happening — because the person who can't stop scrolling isn't lacking discipline. They're the target of an optimization process that has been running for fifteen years, learning from billions of users, getting more effective every week. The least we can do is run a ledger on what it's costing.</p>
+    <div class="scope-note"><strong>A note on scope:</strong> This page is not about productive screen time — the hours you spent building something, learning, creating, or genuinely connecting. We're talking about social media feeds, doomscrolling, algorithmic video loops, and gamified shopping apps. The hours that were taken from you, not the ones you chose.</div>
+  </div>
+
+  <div class="page-body">
+    <div class="main-col">
+
+      <!-- WHAT IT IS -->
+      <div class="section reveal" id="what">
+        <div class="section-label">The Mechanism</div>
+        <h2>Not a Habit. A Designed Environment.</h2>
+        <p>Every other vice on this site is a substance — something you put in your body that produces a chemical response. This one works differently. It's a designed environment built to produce the same psychological responses as addictive substances, without any molecule crossing your lips. The dependency is engineered, not incidental.</p>
+        <div class="key-line">You are not the customer. You are the product. Your attention is what's being sold — and the platform's job is to maximize the time you spend generating it.</div>
+        <div class="mechanism-grid">
+          <div class="mechanism-item">
+            <div class="mechanism-label">Variable Reward Loop</div>
+            <div class="mechanism-value">Identical mechanism to slot machines. Unpredictable reward (a good post, a like, a reply) produces stronger compulsion than predictable reward. Documented. Intentional. Named by the engineers who built it.</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Infinite Scroll</div>
+            <div class="mechanism-value">Designed specifically to remove the natural stopping point. Every physical medium has an end. The feed doesn't. This was a deliberate product decision, not a technical constraint.</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Autoplay</div>
+            <div class="mechanism-value">Removes the active choice to continue. The default is always more. Opting out requires a decision; continuing requires nothing.</div>
+          </div>
+          <div class="mechanism-item">
+            <div class="mechanism-label">Notification Architecture</div>
+            <div class="mechanism-value">Intermittent, unpredictable, timed to pull you back at the moment of highest re-engagement probability. The ping is not accidental — it's a calculated interruption.</div>
+          </div>
+          <div class="mechanism-item full">
+            <div class="mechanism-label">Social Validation Loops</div>
+            <div class="mechanism-value">Likes, followers, replies, streaks — quantified social feedback that maps onto dopamine response as reliably as any substance on this site. The number going up is the reward. The platform built the number.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLATFORMS -->
+      <div class="section reveal" id="platforms">
+        <div class="section-label">Named Specifically</div>
+        <h2>The Platforms</h2>
+        <p>Each platform runs the same underlying mechanisms — but with a distinct damage profile. Knowing which one you're using and what it's optimized for is the first step toward running an honest ledger.</p>
+        <div class="platform-grid">
+
+          <div class="platform-card">
+            <div class="platform-header">
+              <div class="platform-icon">🎵</div>
+              <div class="platform-name">TikTok / Reels / Shorts</div>
+              <div class="platform-label">Attention</div>
+            </div>
+            <div class="platform-body">
+              The most sophisticated attention capture machine currently deployed at scale. The recommendation algorithm doesn't show you what you asked for — it shows you what will keep you watching, learned from your behavior in real time. The 15-second format is specifically engineered to build a consumption pattern that makes longer-form attention feel effortful by comparison. Most users report intending to spend a few minutes and losing an hour. That gap is not a failure of willpower. It is the product working as designed.
+            </div>
+          </div>
+
+          <div class="platform-card">
+            <div class="platform-header">
+              <div class="platform-icon">📸</div>
+              <div class="platform-name">Instagram / Snapchat</div>
+              <div class="platform-label">Comparison</div>
+            </div>
+            <div class="platform-body">
+              The comparison machine. No other vice on this site actively recalibrates your satisfaction with your own life as a side effect of use. The curated highlight reel presents others' best moments as ambient reality. The correlation with depression, anxiety, and body image distortion is documented extensively — and the platforms have had internal research showing they knew. Stories and streaks add temporal pressure — use it or lose it — creating a daily obligation that other platforms don't engineer as explicitly.
+            </div>
+          </div>
+
+          <div class="platform-card">
+            <div class="platform-header">
+              <div class="platform-icon">🐦</div>
+              <div class="platform-name">Twitter / X</div>
+              <div class="platform-label">Outrage</div>
+            </div>
+            <div class="platform-body">
+              The outrage machine. Engagement on Twitter correlates more strongly with moral outrage than any other emotional register — because outrage produces the most reliable re-engagement. The platform's incentive structure rewards the most emotionally activating content regardless of accuracy or constructiveness. Doomscrolling here is a feature, not a bug. Most heavy users report elevated anxiety, political fatigue, and a distorted sense of how extreme the average person's views actually are — because the algorithm surfaces the most extreme content first.
+            </div>
+          </div>
+
+          <div class="platform-card">
+            <div class="platform-header">
+              <div class="platform-icon">📰</div>
+              <div class="platform-name">News &amp; Doomscrolling</div>
+              <div class="platform-label">Cortisol</div>
+            </div>
+            <div class="platform-body">
+              The legitimacy wrapper. News consumption feels productive — it's "staying informed." The cost is the same as any other feed: cortisol elevation, attention fragmentation, and the slow replacement of deep reading with headline scanning. Most news doomscrollers consume a high volume of information and retain almost none of it, because the format is optimized for continued consumption, not comprehension. Being informed is real. Doomscrolling for three hours is not being informed — it is anxiety in a trench coat.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- WHATNOT CALLOUT -->
+        <div class="whatnot-callout">
+          <div class="whatnot-header">⚠️ &nbsp; Case Study — Whatnot &amp; Gamified Shopping</div>
+          <div class="whatnot-body">
+            <p>Whatnot is a livestream shopping app built on the same variable reward architecture as every other platform on this page — with the addition of a direct purchase mechanism. The format layers social pressure (the host, the live audience), artificial scarcity ("only 3 left"), gamified freebies and "deals," and real-time FOMO into a single continuous stream. The result is one of the most financially predatory UX patterns on the market.</p>
+            <p style="margin-top: 0.75rem;">The hook is the freebies and discounts — things that feel like wins. The mechanism is that each win keeps you in the stream, and staying in the stream produces more purchases. <strong>Users routinely report spending $500–$3,000+ in their first month</strong>, often on items they didn't intend to buy, at prices that frequently exceed retail when shipping is factored in. The "deal" framing is the design. The spending is the product.</p>
+            <p style="margin-top: 0.75rem;">If you use Whatnot, run the financial ledger specifically: total spent last month, total spent last 3 months. Most users are wrong about their number by a factor of two or more.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- UPSIDE -->
+      <div class="section reveal" id="upside">
+        <div class="section-label">The Other Side</div>
+        <h2>The Genuine Upside</h2>
+        <p>The same honesty we apply to every page applies here. The upside of social media and screens is real — and it belongs in the ledger before the costs do.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Connection and community</strong> — For many people, genuine friendships and communities exist primarily or partly online. That's real social value, not a consolation prize.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Entertainment that's actually good</strong> — Not all of it is a trap. Some of it is genuinely funny, beautiful, or interesting.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Information access</strong> — When used deliberately, social media surfaces knowledge, perspectives, and expertise that would be otherwise inaccessible.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Creative exposure</strong> — Artists, makers, writers, and thinkers doing work you'd never encounter otherwise. Real cultural value.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Ambient social presence</strong> — For isolated or geographically separated people, the low-grade sense of social connection that feeds provide has genuine psychological value.</div></div>
+          <div class="factor-item"><span class="fi-dot green"></span><div><strong>Professional utility</strong> — Networking, audience-building, research, customer connection. Legitimate, significant, worth protecting from the cost conversation.</div></div>
+        </div>
+        <p style="margin-top: 1.5rem;">The question isn't whether to be on social media. It's whether you're using it or it's using you. Those look identical from the outside and feel very different from the inside — once you're honest about which one is happening.</p>
+      </div>
+
+      <!-- FINANCIAL COST -->
+      <div class="section reveal" id="financial">
+        <div class="section-label">Cost Layer 01</div>
+        <h2>Financial Cost</h2>
+        <p>Screens is the only page on this site where you're not paying per use in cash. The financial ledger is mostly indirect — which is exactly what makes it invisible.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Subscriptions</strong> — Streaming services, news paywalls, premium apps. Most users have 4–8 active subscriptions they don't fully track. $20–80/month → $240–960/year before impulse purchases.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Platform-influenced impulse purchases</strong> — Social media is a direct-to-purchase funnel. Instagram ads, TikTok Shop, influencer recommendations, Whatnot streams. Most users significantly underestimate how much of their discretionary spending originates from time spent on feeds.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Gamified shopping platforms</strong> (Whatnot, Amazon Live, etc.) — Variable reward + artificial scarcity + social pressure = a purchase environment designed to override deliberate spending decisions. Track this separately and specifically.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Productivity cost</strong> — Research on context-switching puts cognitive performance reduction at 20–40% in high-interruption environments. If your work is knowledge-based, fragmented attention has a direct income cost that doesn't appear on any receipt.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Your attention, sold</strong> — Every hour on a free platform generates advertising revenue for that platform from your presence. You are paying with time and data whether or not you track it.</div></div>
+        </div>
+
+        <div class="calc-embed">
+          <div class="calc-title">Your Attention Cost</div>
+          <div class="calc-sub">What is your time actually worth — and how much of it is going to feeds?</div>
+          <div class="calc-row">
+            <div class="calc-group">
+              <label>Hours per day on social / feeds</label>
+              <input type="number" id="s-hours" placeholder="e.g. 3" min="0" max="16" step="0.5" />
+            </div>
+            <div class="calc-group">
+              <label>Your hourly value ($)</label>
+              <input type="number" id="s-rate" placeholder="e.g. 25" min="0" />
+            </div>
+          </div>
+          <button class="btn-calc" onclick="calcScreens()">Calculate →</button>
+          <div class="calc-result" id="s-result">
+            <div class="cr-row"><span class="cr-label">Annual hours on feeds</span><span class="cr-val" id="sr-hrs">—</span></div>
+            <div class="cr-row"><span class="cr-label">Equivalent in full days</span><span class="cr-val big" id="sr-days">—</span></div>
+            <div class="cr-row"><span class="cr-label">Annual attention value</span><span class="cr-val big" id="sr-val">—</span></div>
+            <div class="cr-row"><span class="cr-label">That time could build…</span><span class="cr-val" id="sr-alt">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATTENTION ECONOMY -->
+      <div class="section reveal" id="attention">
+        <div class="section-label">The Core Reframe</div>
+        <h2>The Attention Economy</h2>
+        <p>This is what makes screens categorically different from every other vice on this site. Nicotine, caffeine, THC, alcohol — none of them employ engineers to make you want them more. None of them learn from your behavior in real time. None of them are backed by a business model that requires your continued use to generate revenue.</p>
+        <p>Two concepts worth naming directly:</p>
+        <div class="concept-pair">
+          <div class="concept-card extraction">
+            <div class="concept-label">The Model</div>
+            <div class="concept-title">The Extraction Model</div>
+            <div class="concept-desc">Every minute you spend on a platform generates data that makes the platform more valuable and the targeting more precise. You are not the user in the traditional sense — you are the raw material. The product being optimized is not your experience. It is your continued presence. This is not a conspiracy theory. It is the publicly stated business model of every major social platform.</div>
+          </div>
+          <div class="concept-card budget">
+            <div class="concept-label">The Resource</div>
+            <div class="concept-title">The Attention Budget</div>
+            <div class="concept-desc">Attention is finite. Unlike money, you cannot earn more of it — you have approximately 16 waking hours per day, and every minute allocated to a feed is a minute unavailable for everything else. Most people have never run a time ledger the way they run a financial one. The annual hours number, when calculated, tends to produce the same effect as the five-year financial projection on every other page on this site.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOURS MATH -->
+      <div class="section reveal" id="hours">
+        <div class="section-label">The Displaced Ambition</div>
+        <h2>What Those Hours Actually Are</h2>
+        <p>Most heavy users spend 3–6 hours per day on social media and feeds. The annual number, written out, tends to land differently than the daily number does.</p>
+        <table class="hours-table">
+          <thead>
+            <tr>
+              <th>Daily Use</th>
+              <th>Annual Hours</th>
+              <th>Full Days</th>
+              <th>What that builds</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3 hours/day</td>
+              <td class="td-hours">1,095 hrs</td>
+              <td class="td-days">45 days</td>
+              <td class="td-alt">Conversational fluency in a new language</td>
+            </tr>
+            <tr>
+              <td>4 hours/day</td>
+              <td class="td-hours">1,460 hrs</td>
+              <td class="td-days">60 days</td>
+              <td class="td-alt">Intermediate proficiency on an instrument</td>
+            </tr>
+            <tr>
+              <td>6 hours/day</td>
+              <td class="td-hours">2,190 hrs</td>
+              <td class="td-days">91 days</td>
+              <td class="td-alt">A functional codebase, a manuscript, a serious body of work</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 1.5rem;">Most heavy users cannot name what they've built with that time. That's not a moral failure — it's the design. The platform's job is to make the hours feel small while they're happening and invisible in retrospect. The ledger makes them visible.</p>
+        <div class="opportunity-list">
+          <div class="opp-item">The project that's been "almost started" for two years.</div>
+          <div class="opp-item">The skill that would have changed what you're worth professionally.</div>
+          <div class="opp-item">The book you keep meaning to write, the body you keep meaning to build.</div>
+          <div class="opp-item">The relationships that needed presence, not parallel scrolling.</div>
+          <div class="opp-item">The version of yourself you were building before the feed became the default.</div>
+        </div>
+      </div>
+
+      <!-- COMPARISON MACHINE -->
+      <div class="section reveal" id="comparison">
+        <div class="section-label">Unique to This Vice</div>
+        <h2>The Comparison Machine</h2>
+        <p>No other vice on this site makes you feel worse about your own life as a mechanism of engagement. Alcohol doesn't require your dissatisfaction. THC doesn't profit from your sense of inadequacy. This one does — because content that triggers social comparison produces more engagement than content that doesn't, and more engagement means more revenue.</p>
+        <p>Three documented effects worth naming:</p>
+        <div class="comparison-effects">
+          <div class="effect-card">
+            <div class="effect-title">Social Comparison Amplification</div>
+            <div class="effect-desc">You're comparing your full internal experience — including your bad days, your doubts, your private failures — to everyone else's curated external presentation. You know you're having a hard week. They appear to always be having a good one. The comparison is structurally unfair and the platform knows it. The asymmetry is the point.</div>
+          </div>
+          <div class="effect-card">
+            <div class="effect-title">Body Image Distortion</div>
+            <div class="effect-desc">Documented extensively, particularly acute for women and adolescents. The platforms have internal research showing they knew about this effect and published certain products anyway. The feed is not a neutral mirror. It is a curated environment of filtered, lit, and edited images presented as ambient reality.</div>
+          </div>
+          <div class="effect-card">
+            <div class="effect-title">Achievement Anxiety</div>
+            <div class="effect-desc">The constant visibility of others' professional milestones, relationships, possessions, and experiences creates a background pressure with no equivalent in any other vice on this site. It functions like a low-grade ambient anxiety generator — always on, rarely recognized as coming from the feed specifically, consistently correlated with reduced life satisfaction in the research.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PSYCHOLOGICAL COST -->
+      <div class="section reveal" id="psychological">
+        <div class="section-label">Cost Layer 02</div>
+        <h2>Psychological Cost</h2>
+        <p>The psychological cost profile of heavy social media use is among the most documented in modern research — and among the most consistently underestimated by users, because the costs accumulate slowly and feel like ambient mood rather than a specific cause.</p>
+        <div class="factor-list">
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Attention fragmentation</strong> — The average smartphone user checks their device 96 times per day. Context-switching at this frequency degrades not just in-the-moment focus but sustained attention capacity as a baseline over time. Deep work becomes harder the longer high-frequency interruption continues.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Anxiety amplification</strong> — Notification architecture keeps the nervous system in a low-grade alert state. The unpredictability of the ping is the mechanism — the same intermittent signal that makes the reward loop compelling also maintains a background stress response.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>Doomscrolling and cortisol</strong> — News and outrage content elevates cortisol reliably. Sustained doomscrolling maintains elevated cortisol baseline. Most heavy news scrollers are not more informed than light users — they are more anxious, with a distorted perception of how dangerous and polarized the world actually is.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Sleep disruption</strong> — Blue light and cognitive activation at night are documented, widely known, and widely ignored. The last thing most people see before sleep is a feed optimized to produce engagement. The first thing most people reach for in the morning is the same feed. The bookends of the day belong to the algorithm.</div></div>
+          <div class="factor-item"><span class="fi-dot red"></span><div><strong>The loneliness paradox</strong> — More connected than any generation in history, higher reported loneliness than any previous measurement. The ambient social presence of feeds substitutes for — and in time may erode — the capacity for deeper, slower, riskier human connection.</div></div>
+          <div class="factor-item"><span class="fi-dot amber"></span><div><strong>Toxic subcultures</strong> — Algorithmic amplification doesn't filter for healthy content. It filters for engaging content. Rage, tribalism, body dysmorphia communities, radicalization pipelines, and financial scams all thrive on the same recommendation engines as everything else — because they're engaging. The algorithm doesn't care what it's feeding you. It cares that you stay.</div></div>
+        </div>
+      </div>
+
+      <!-- DEPENDENCY CURVE -->
+      <div class="section reveal" id="curve">
+        <div class="section-label">The Progression</div>
+        <h2>The Dependency Curve</h2>
+        <p>Unlike substance dependency, social media dependency doesn't produce obvious physical withdrawal. It produces something quieter: an inability to tolerate unstructured time, boredom, or silence without a screen. That's harder to recognize — and harder to argue with yourself about.</p>
+        <div class="dep-curve">
+          <div class="dep-step s1">
+            <div class="dep-num">1</div>
+            <div class="dep-content">
+              <div class="dep-title">Intentional Use</div>
+              <div class="dep-desc">Specific purpose, defined session, easy to close. You open the app because you decided to. You close it when you intended to.</div>
+            </div>
+          </div>
+          <div class="dep-step s2">
+            <div class="dep-num">2</div>
+            <div class="dep-content">
+              <div class="dep-title">Habitual Checking</div>
+              <div class="dep-desc">Reflexive phone reach without specific intent. Filling gaps — waiting rooms, ads, quiet moments. Starting to feel mildly uncomfortable leaving the phone in another room.</div>
+            </div>
+          </div>
+          <div class="dep-step s3">
+            <div class="dep-num">3</div>
+            <div class="dep-content">
+              <div class="dep-title">Default Activity</div>
+              <div class="dep-desc">Screens fill any unstructured time automatically. Boredom has become uncomfortable without them. "Nothing to do" now means "phone time" without a conscious decision being made.</div>
+            </div>
+          </div>
+          <div class="dep-step s4">
+            <div class="dep-num">4</div>
+            <div class="dep-content">
+              <div class="dep-title">Background Presence</div>
+              <div class="dep-desc">Screen on during meals, conversations, other activities. Attention divided as baseline. In-person interactions competing with the feed. People in the room noticing before you do.</div>
+            </div>
+          </div>
+          <div class="dep-step s5">
+            <div class="dep-num">5</div>
+            <div class="dep-content">
+              <div class="dep-title">Compulsive Use</div>
+              <div class="dep-desc">Failed attempts to reduce. Significant anxiety or restlessness without the phone. Relationships, work, sleep, and mood measurably affected. Knowing you should stop and opening the app anyway.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HARM REDUCTION -->
+      <div class="section reveal" id="reduction">
+        <div class="section-label">Agency, Not Abstinence</div>
+        <h2>Harm Reduction Strategies</h2>
+        <p>The goal is intentional use — where you're the one deciding when and why. These aren't discipline strategies. They're structural interventions that work with how the brain actually operates, not against it.</p>
+        <div class="hr-grid">
+          <div class="hr-card">
+            <div class="hr-tag">Baseline</div>
+            <div class="hr-card-title">Look at Your Actual Number</div>
+            <div class="hr-card-desc">Most people are wrong about their daily screen time by 40–60%. Check the Screen Time report (iOS) or Digital Wellbeing (Android) before assessing your relationship with it. The number is usually a surprise.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Interruption</div>
+            <div class="hr-card-title">Notification Audit</div>
+            <div class="hr-card-desc">Not reduction — elimination. Every app that can interrupt you has a vote on your attention. Revoke most of them. The apps that need to reach you in real emergencies are a short list.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Context</div>
+            <div class="hr-card-title">Designated No-Phone Zones</div>
+            <div class="hr-card-desc">Meals, first hour of morning, last hour before sleep, specific rooms. Context-based rules are more durable than willpower-based rules. You don't decide each time — the context decides.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Feed</div>
+            <div class="hr-card-title">Active Curation</div>
+            <div class="hr-card-desc">The algorithm learns from what you engage with. Deliberate curation — muting, unfollowing, blocking categories — is the only way to shift what you're shown. It's not a one-time task. It's ongoing maintenance.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Session</div>
+            <div class="hr-card-title">Scheduled Use vs. Ambient Availability</div>
+            <div class="hr-card-desc">The difference between using Twitter for 20 minutes and having Twitter available all day is not 20 minutes of use — it's the background cognitive load of availability. Closing the app entirely between sessions changes the relationship.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Spending</div>
+            <div class="hr-card-title">Treat Shopping Apps Separately</div>
+            <div class="hr-card-desc">Whatnot, TikTok Shop, Instagram Shopping, and similar platforms combine feed dependency with purchase mechanics. Run the financial ledger on these specifically and separately. The "deal" framing is the trap, not the price.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Experiment</div>
+            <div class="hr-card-title">The Grayscale Test</div>
+            <div class="hr-card-desc">Switch your phone display to grayscale for one week. Usage typically drops 20–30% without any other intervention. Color is part of the design. Removing it reduces the pull without requiring willpower.</div>
+          </div>
+          <div class="hr-card">
+            <div class="hr-tag">Root</div>
+            <div class="hr-card-title">Name the Need First</div>
+            <div class="hr-card-desc">Removing the app without addressing what it was meeting — connection, stimulation, avoidance, distraction — tends to fail or displace. Identify the function it's serving before you change the behavior.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEDGER -->
+      <div class="section reveal" id="ledger">
+        <div class="section-label">The Summary</div>
+        <h2>Ledger</h2>
+        <p>Screen time is the only vice on this site where the product is designed against you by intention. That shifts the ledger — not by making it more moralistic, but by making the "risky when" column more specific.</p>
+        <div class="ledger-grid">
+          <div class="ledger-col green-col">
+            <div class="ledger-header">✓ Worth It When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">Use is intentional and time-bounded</div>
+              <div class="ledger-item">You're building, connecting, or creating — not just consuming</div>
+              <div class="ledger-item">You can close the app when you intended to</div>
+              <div class="ledger-item">Mood and satisfaction are stable or better after sessions</div>
+              <div class="ledger-item">Sleep, focus, and in-person relationships are unaffected</div>
+            </div>
+          </div>
+          <div class="ledger-col red-col">
+            <div class="ledger-header">⚠ Risky When</div>
+            <div class="ledger-items">
+              <div class="ledger-item">The phone reach is reflexive, not chosen</div>
+              <div class="ledger-item">Mood reliably drops after sessions but you return anyway</div>
+              <div class="ledger-item">In-person conversations are competing with the feed</div>
+              <div class="ledger-item">Purchases are happening inside feeds without deliberate decisions</div>
+              <div class="ledger-item">Boredom or silence without a screen produces anxiety</div>
+            </div>
+          </div>
+        </div>
+        <div class="ledger-reassess ledger-col amber-col" style="margin-top: 1rem;">
+          <div class="ledger-header">↺ Reassess When</div>
+          <div class="ledger-items">
+            <div class="ledger-item">You haven't looked at your actual daily screen time number</div>
+            <div class="ledger-item">You can't remember the last hour you spent without a device within reach</div>
+            <div class="ledger-item">The projects and habits you care about keep losing to the feed</div>
+            <div class="ledger-item">You've tried to reduce and found it meaningfully harder than expected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL CHECK -->
+      <div class="section reveal" id="check">
+        <div class="section-label">Quick Self-Assessment</div>
+        <h2>Control Check</h2>
+        <p>Five questions. Answer for where you actually are.</p>
+        <div class="control-check">
+          <div class="cc-header">Check all that apply</div>
+          <div class="cc-questions">
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I know my actual daily screen time — not an estimate, a number I've looked at recently.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I can sit with boredom, silence, or waiting for 10+ minutes without reaching for my phone.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>My mood after social media sessions is neutral or positive — not drained, anxious, or vaguely worse.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>I have not made purchases inside a social or shopping feed in the last month that I didn't plan to make.</span>
+            </div>
+            <div class="cc-q">
+              <div class="cc-check" onclick="toggleCheck(this)"></div>
+              <span>The projects and relationships I care about are getting more of my time than my feeds are.</span>
+            </div>
+          </div>
+          <div class="cc-result" id="cc-result"></div>
+        </div>
+      </div>
+
+      <!-- SOVEREIGNTY -->
+      <div class="sovereignty reveal">
+        <h2>You didn't download these apps to hand over your evenings, your mood, and your money. <em>When did using them stop feeling like a choice?</em></h2>
+        <p>That's not a rhetorical question. It has a real answer — a specific period when the habit shifted from something you did to something that happens to you. Most people can find it if they look.</p>
+        <p>The apps were designed by some of the most talented engineers in the world, with the explicit goal of making that transition invisible. You didn't fail at self-discipline. You were the target of an optimization process that has been running for fifteen years and gets better every week.</p>
+        <p>Knowing that doesn't take the habit away. But it changes what you're actually up against — and what reclaiming your attention actually means.</p>
+        <p>Everything you want to build is on the other side of that reclamation. The feed will still be there. It always will be. The question is whether you'll be in it, or using it.</p>
+        <span class="tagline">Everything has a cost. You choose which ones to pay.</span>
+        <div class="safety-net">
+          <p>If screen time or social media is intersecting with depression, anxiety, or loneliness in ways that feel heavier than a usage problem — that's worth talking to someone about. The <a href="https://www.samhsa.gov/find-help/national-helpline" target="_blank">SAMHSA helpline</a> covers behavioral health broadly: 1-800-662-4357. Free, confidential, 24/7.</p>
+        </div>
+      </div>
+
+    </div><!-- /main-col -->
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sc-header">On This Page</div>
+        <div class="sc-body">
+          <a href="#what"        class="sc-nav-link">The Mechanism</a>
+          <a href="#platforms"   class="sc-nav-link">The Platforms</a>
+          <a href="#upside"      class="sc-nav-link">The Upside</a>
+          <a href="#financial"   class="sc-nav-link">Financial Cost</a>
+          <a href="#attention"   class="sc-nav-link">The Attention Economy</a>
+          <a href="#hours"       class="sc-nav-link">Displaced Ambition</a>
+          <a href="#comparison"  class="sc-nav-link">The Comparison Machine</a>
+          <a href="#psychological" class="sc-nav-link">Psychological Cost</a>
+          <a href="#curve"       class="sc-nav-link">Dependency Curve</a>
+          <a href="#reduction"   class="sc-nav-link">Harm Reduction</a>
+          <a href="#ledger"      class="sc-nav-link">Ledger</a>
+          <a href="#check"       class="sc-nav-link">Control Check</a>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">By the Numbers</div>
+        <div class="sc-body">
+          <div class="sc-stat">
+            <span class="sc-stat-label">Avg daily phone checks</span>
+            <span class="sc-stat-val">96×</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">US adults avg screen time</span>
+            <span class="sc-stat-val">7 hrs/day</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">7 hrs/day annualized</span>
+            <span class="sc-stat-val">106 full days</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Productivity loss (high interruption)</span>
+            <span class="sc-stat-val">20–40%</span>
+          </div>
+          <div class="sc-stat">
+            <span class="sc-stat-label">Grayscale usage reduction</span>
+            <span class="sc-stat-val">~20–30%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Cost Layers</div>
+        <div class="sc-body">
+          <span class="sc-tag">Psychological</span>
+          <span class="sc-tag">Opportunity</span>
+          <span class="sc-tag">Attention</span>
+          <span class="sc-tag">Financial</span>
+          <span class="sc-tag">Relational</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-header">Other Vices</div>
+        <div class="sc-body">
+          <a href="/nicotine/"   class="sc-nav-link">🚬 Nicotine</a>
+          <a href="/caffeine/"   class="sc-nav-link">☕ Caffeine</a>
+          <a href="/thc/"        class="sc-nav-link">🌿 THC / Cannabis</a>
+          <a href="/alcohol/"    class="sc-nav-link">🥃 Alcohol</a>
+          <a href="/substances/" class="sc-nav-link">⚗️ Other Substances</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <script>
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    // CALCULATOR
+    function calcScreens() {
+      const hours = parseFloat(document.getElementById('s-hours').value);
+      const rate  = parseFloat(document.getElementById('s-rate').value);
+      if (isNaN(hours) || hours <= 0 || isNaN(rate) || rate <= 0) {
+        alert('Please enter your daily hours and hourly value.');
+        return;
+      }
+      const annualHrs  = Math.round(hours * 365);
+      const fullDays   = Math.round(annualHrs / 24);
+      const annualVal  = Math.round(annualHrs * rate);
+
+      const alts = [
+        { h: 200,  t: 'basic fluency in a new skill' },
+        { h: 500,  t: 'a genuinely competitive side project' },
+        { h: 1000, t: 'conversational fluency in a language' },
+        { h: 1500, t: 'intermediate mastery of an instrument' },
+        { h: 2000, t: 'a serious creative or professional body of work' },
+        { h: Infinity, t: 'something that would change your trajectory' }
+      ];
+      const alt = alts.find(a => annualHrs < a.h)?.t || 'something that would change your trajectory';
+
+      document.getElementById('sr-hrs').textContent  = annualHrs.toLocaleString() + ' hrs';
+      document.getElementById('sr-days').textContent = fullDays + ' full days';
+      document.getElementById('sr-val').textContent  = '$' + annualVal.toLocaleString();
+      document.getElementById('sr-alt').textContent  = alt;
+      document.getElementById('s-result').classList.add('show');
+    }
+
+    // CONTROL CHECK
+    function toggleCheck(el) {
+      el.classList.toggle('checked');
+      updateCheckResult();
+    }
+
+    function updateCheckResult() {
+      const checks = document.querySelectorAll('.cc-check');
+      const count  = [...checks].filter(c => c.classList.contains('checked')).length;
+      const result = document.getElementById('cc-result');
+      if (count === 0) { result.classList.remove('show'); return; }
+
+      let msg = '';
+      if (count === 5) {
+        msg = '5/5 — Strong indicators of intentional use. The tool appears to be working for you rather than on you.';
+      } else if (count >= 3) {
+        msg = `${count}/5 — Some intentionality present. The unchecked questions are worth sitting with — particularly the mood and project ones.`;
+      } else if (count === 2) {
+        msg = `${count}/5 — The pattern is worth examining. Which platform is taking the most? Start with the actual screen time number.`;
+      } else {
+        msg = `${count}/5 — Worth a serious look. Not a judgment — information. What would one week of intentional use tell you about where the default actually sits?`;
+      }
+      result.textContent = msg;
+      result.classList.add('show');
+    }
+  </script>
+
+</body>
+</html>
